@@ -26,7 +26,21 @@ export default async function handler(req, res) {
 -Fundação
 -Contatos
 -Link de site e redes sociais
-Esses dados de estimativa, você pode criar uma forma de calcular baseada em dados que você encontrar
+
+FÓRMULA PARA CALCULAR FATURAMENTO ANUAL:
+Use esta fórmula: (Funcionários × Ticket do setor) × Fator = Faturamento Anual
+
+1. Funcionários: Busque no LinkedIn da empresa ou estime pela estrutura
+2. Ticket do setor: Valor médio por funcionário baseado no setor de atuação (pesquise o valor médio do setor)
+3. Fator: Ajuste baseado em tempo de mercado, região e porte (geralmente entre 0.8 e 1.2)
+
+Exemplo de cálculo:
+- Funcionários: 130 (via LinkedIn)
+- Ticket: R$ 450.000,00 (setor de acessórios/peças)
+- Fator: 1.0
+- Cálculo: (130 × 450.000) × 1.0 = R$ 58.500.000,00/ano
+
+Mostre o cálculo completo no relatório.
 
 IMPORTANTE: Retorne o relatório COMPLETO diretamente no texto da sua resposta, não crie arquivos separados.`;
 

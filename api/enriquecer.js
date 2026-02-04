@@ -14,28 +14,21 @@ export default async function handler(req, res) {
   const MANUS_API_KEY = process.env.MANUS_API_KEY || 'sk-XX1MREgcCgnZzOduoy96fNHckUBbquN6xWjObtI_ms5GSmPNhz1IxHsY0ZCpbEPqEqhmf1xsYBfNsy7Xz4iV1_VvA_qB';
   const MANUS_API_URL = 'https://api.manus.ai/v1';
 
-  const PROMPT = `Gostaria que você atuasse como uma plataforma de inteligência e prospecção de dados para vendas. Para cada CNPJ que eu enviar para você, quero que você enriqueça ele com:
--Nome da empresa
--Segmento (pode ser baseado no google meu negócio)
--CNAE principal
--Porte (baseado em classificação do BNDES - https://www.bndes.gov.br/wps/portal/site/home/financiamento/guia/porte-de-empresa)
--Nivel de atividade (baseado em atividade em redes sociais e site)
--Estimativa de funcionários
--Estimativa de faturamento
--Capital social
--Fundação
--Contatos
--Link de site e redes sociais
+  const PROMPT = `Gostaria que você atuasse como uma plataforma de inteligência e prospecção de dados para vendas. Para o CNPJ que vou enviar, quero que você enriqueça ele com:
+- Nome da empresa
+- Segmento (pode ser baseado no google meu negócio)
+- CNAE principal
+- Porte (baseado em classificação do BNDES)
+- Nivel de atividade (baseado em atividade em redes sociais e site)
+- Estimativa de funcionários
+- Estimativa de faturamento
+- Capital social
+- Fundação
+- Contatos (telefone, email, whatsapp)
+- Link de site e redes sociais
 
-Esses dados de estimativa, você pode criar uma forma de calcular baseada em dados que você encontrar.
+Retorne os dados de forma organizada e clara, em formato de texto simples para copiar em um CRM.
 
-Para o FATURAMENTO ANUAL, use esta fórmula:
-Faturamento = (Funcionários × Ticket do setor) × Fator
-- Funcionários: use o número que você encontrou
-- Ticket: faturamento médio por funcionário do setor (pesquise)
-- Fator: ajuste entre 0.8 e 1.2
-
-Mostre o cálculo do faturamento.
 
 IMPORTANTE: Retorne o relatório COMPLETO diretamente no texto da sua resposta, não crie arquivos separados.`;
 

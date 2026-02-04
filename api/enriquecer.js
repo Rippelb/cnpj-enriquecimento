@@ -1,5 +1,5 @@
- export default async function handler(req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+ export default async function handler(req, res) {                                                                                                         
+    res.setHeader('Access-Control-Allow-Origin', '*');      
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -14,21 +14,49 @@
     const MANUS_API_KEY = process.env.MANUS_API_KEY || 'sk-XX1MREgcCgnZzOduoy96fNHckUBbquN6xWjObtI_ms5GSmPNhz1IxHsY0ZCpbEPqEqhmf1xsYBfNsy7Xz4iV1_VvA_qB';   
     const MANUS_API_URL = 'https://api.manus.ai/v1';
 
-    const PROMPT = `Gostaria que você atuasse como uma plataforma de inteligência e prospecção de dados para vendas. Para o CNPJ que vou enviar, quero que  
-  você enriqueça ele com:
-  - Nome da empresa
-  - Segmento (pode ser baseado no google meu negócio)
-  - CNAE principal
-  - Porte (baseado em classificação do BNDES)
-  - Nivel de atividade (baseado em atividade em redes sociais e site)
-  - Estimativa de funcionários
-  - Estimativa de faturamento
-  - Capital social
-  - Fundação
-  - Contatos (telefone, email, whatsapp)
-  - Link de site e redes sociais
+    const PROMPT = `Você é uma plataforma de inteligência de dados para prospecção B2B. Para o CNPJ informado, busque dados em FONTES OFICIAIS e retorne    
+  informações PRECISAS.
 
-  Retorne os dados de forma organizada e clara, em formato de texto simples para copiar em um CRM.`;
+  IMPORTANTE - BUSQUE DADOS OFICIAIS:
+  1. Acesse sites como: cnpj.biz, casadosdados.com.br, consultacnpj.com, econodata.com.br, speedio.com.br para dados cadastrais oficiais da Receita Federal 
+  2. Para contatos, busque no site oficial da empresa e Google Meu Negócio
+  3. Para redes sociais, busque diretamente no LinkedIn, Instagram, Facebook
+  4. Para número de funcionários, use o LinkedIn da empresa
+
+  DADOS OBRIGATÓRIOS (busque em fontes oficiais):
+  - Razão Social (oficial da Receita)
+  - Nome Fantasia
+  - CNPJ formatado
+  - CNAE principal com código e descrição
+  - Capital Social (valor exato da Receita Federal)
+  - Data de Abertura (data exata)
+  - Natureza Jurídica
+  - Porte (MEI, ME, EPP, Demais)
+  - Situação Cadastral (Ativa, Baixada, etc)
+  - Endereço completo (logradouro, número, bairro, cidade, UF, CEP)
+
+  DADOS DE CONTATO (busque no site e Google):
+  - Telefones (todos que encontrar)
+  - WhatsApp (se disponível)
+  - E-mail
+  - Site oficial
+
+  REDES SOCIAIS (busque os links reais):
+  - LinkedIn
+  - Instagram
+  - Facebook
+  - YouTube (se houver)
+
+  DADOS COMPLEMENTARES:
+  - Número de funcionários (do LinkedIn ou estimativa)
+  - Quadro societário (nomes dos sócios)
+  - Segmento/Ramo de atuação
+
+  FORMATO DE SAÍDA:
+  Retorne em texto simples e organizado, pronto para copiar em um CRM.
+  NÃO use tabelas markdown. Use apenas texto com quebras de linha.
+  Indique "Não encontrado" se não achar algum dado.
+  Seja PRECISO - não invente dados, busque nas fontes.`;
 
     try {
       const { cnpj, nome } = req.body;
@@ -54,13 +82,7 @@
       }
 
       const task = await createRes.json();
-
-      // Debug: retorna tudo que o Manus mandou
-      return res.status(200).json({
-        debug: true,
-        taskId: task.id || task.task_id || task.taskId,
-        manusResponse: task
-      });
+      return res.status(200).json({ taskId: task.id || task.task_id || task.taskId });
 
     } catch (e) {
       return res.status(500).json({ error: e.message });

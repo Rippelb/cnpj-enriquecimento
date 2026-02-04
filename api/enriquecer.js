@@ -1,5 +1,5 @@
-  export default async function handler(req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*');                                                                                                      
+ export default async function handler(req, res) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -43,7 +43,7 @@
         method: 'POST',
         headers: {
           'API_KEY': MANUS_API_KEY,
-          'Content-Type': 'application/json'                                                                                                                
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ prompt })
       });
@@ -54,7 +54,13 @@
       }
 
       const task = await createRes.json();
-      return res.status(200).json({ taskId: task.id });
+
+      // Debug: retorna tudo que o Manus mandou
+      return res.status(200).json({
+        debug: true,
+        taskId: task.id || task.task_id || task.taskId,
+        manusResponse: task
+      });
 
     } catch (e) {
       return res.status(500).json({ error: e.message });

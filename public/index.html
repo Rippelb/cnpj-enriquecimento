@@ -166,7 +166,7 @@
             <div class="loading" id="loading" style="display: none;">
                 <div class="loading-spinner"></div>
                 <p>Consultando Manus AI...</p>
-                <p class="status-text">Isso pode levar alguns minutos</p>
+                <p class="status-text" id="statusText">Criando task...</p>
             </div>
 
             <div class="error" id="error" style="display: none;"></div>
@@ -184,7 +184,7 @@
     </div>
 
     <script>
-        // Máscara CNPJ
+        // Mascara CNPJ
         document.getElementById('cnpj').addEventListener('input', (e) => {
             let v = e.target.value.replace(/\D/g, '').slice(0, 14);
             if (v.length > 12) v = v.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
@@ -194,6 +194,12 @@
             e.target.value = v;
         });
 
+        // Funcao para checar status da task
+        async function checkTaskStatus(taskId) {
+            const response = await fetch(`/api/status?id=${taskId}`);
+            return await response.json();
+        }
+
         // Submit
         document.getElementById('form').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -202,12 +208,13 @@
             const nome = document.getElementById('nome').value.trim();
 
             if (cnpj.replace(/\D/g, '').length !== 14) {
-                alert('CNPJ deve ter 14 dígitos');
+                alert('CNPJ deve ter 14 digitos');
                 return;
             }
 
             const btn = document.getElementById('submitBtn');
             const loading = document.getElementById('loading');
+            const statusText = document.getElementById('statusText');
             const error = document.getElementById('error');
             const resultSection = document.getElementById('resultSection');
 
@@ -215,24 +222,60 @@
             loading.style.display = 'block';
             error.style.display = 'none';
             resultSection.classList.remove('active');
+            statusText.textContent = 'Criando task...';
 
             try {
-                const response = await fetch('/api/enriquecer', {
+                // Criar task
+                const createResponse = await fetch('/api/enriquecer', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ cnpj, nome })
                 });
 
-                const data = await response.json();
+                const createData = await createResponse.json();
 
-                if (!response.ok) {
-                    throw new Error(data.error || 'Erro na consulta');
+                if (!createResponse.ok) {
+                    throw new Error(createData.error || 'Erro ao criar task');
                 }
 
-                document.getElementById('resultBox').textContent = data.resultado;
-                resultSection.classList.add('active');
-                document.getElementById('copyBtn').textContent = 'Copiar para CRM';
-                document.getElementById('copyBtn').classList.remove('copied');
+                const taskId = createData.taskId;
+                statusText.textContent = 'Aguardando Manus processar... (pode levar alguns minutos)';
+
+                // Polling para checar status
+                let attempts = 0;
+                const maxAttempts = 120; // 10 minutos (5s * 120)
+
+                while (attempts < maxAttempts) {
+                    await new Promise(r => setTimeout(r, 5000)); // Espera 5 segundos
+                    attempts++;
+
+                    statusText.textContent = `Aguardando resposta... (${attempts * 5}s)`;
+
+                    try {
+                        const statusData = await checkTaskStatus(taskId);
+
+                        if (statusData.status === 'completed') {
+                            document.getElementById('resultBox').textContent = statusData.resultado;
+                            resultSection.classList.add('active');
+                            document.getElementById('copyBtn').textContent = 'Copiar para CRM';
+                            document.getElementById('copyBtn').classList.remove('copied');
+                            loading.style.display = 'none';
+                            btn.disabled = false;
+                            return;
+                        }
+
+                        if (statusData.status === 'failed') {
+                            throw new Error(statusData.error || 'Task falhou no Manus');
+                        }
+
+                        // Se status é 'pending', continua o loop
+                    } catch (pollError) {
+                        // Se der erro no polling, continua tentando
+                        console.log('Erro no polling, tentando novamente...', pollError);
+                    }
+                }
+
+                throw new Error('Timeout: Manus demorou demais para responder');
 
             } catch (err) {
                 error.textContent = err.message;

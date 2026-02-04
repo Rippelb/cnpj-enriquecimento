@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   }
 
   const MANUS_API_KEY = process.env.MANUS_API_KEY || 'sk-XX1MREgcCgnZzOduoy96fNHckUBbquN6xWjObtI_ms5GSmPNhz1IxHsY0ZCpbEPqEqhmf1xsYBfNsy7Xz4iV1_VvA_qB';
-  const MANUS_API_URL = 'https://open.manus.ai/v1';
+  const MANUS_API_URL = 'https://api.manus.ai/v1';
 
   const PROMPT = `Gostaria que você atuasse como uma plataforma de inteligência e prospecção de dados para vendas. Para o CNPJ que vou enviar, quero que você enriqueça ele com:
 - Nome da empresa
@@ -43,7 +43,7 @@ Retorne os dados de forma organizada e clara, em formato de texto simples para c
     const createRes = await fetch(`${MANUS_API_URL}/tasks`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${MANUS_API_KEY}`,
+        'API_KEY': MANUS_API_KEY,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ prompt })
@@ -61,7 +61,7 @@ Retorne os dados de forma organizada e clara, em formato de texto simples para c
       await new Promise(r => setTimeout(r, 5000));
 
       const checkRes = await fetch(`${MANUS_API_URL}/tasks/${task.id}`, {
-        headers: { 'Authorization': `Bearer ${MANUS_API_KEY}` }
+        headers: { 'API_KEY': MANUS_API_KEY }
       });
 
       if (!checkRes.ok) continue;

@@ -1,4 +1,4 @@
-  export default async function handler(req, res) {
+export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -26,18 +26,13 @@
         return res.status(500).json({ error: `Erro ao checar task: ${err}` });
       }
 
-      const taskStatus = await checkRes.json();
+      const taskData = await checkRes.json();
 
-      if (taskStatus.status === 'completed') {
-        const resultado = taskStatus.output || taskStatus.result || taskStatus.response || JSON.stringify(taskStatus, null, 2);
-        return res.status(200).json({ status: 'completed', resultado });
-      }
-
-      if (taskStatus.status === 'failed') {
-        return res.status(200).json({ status: 'failed', error: 'Task falhou no Manus' });
-      }
-
-      return res.status(200).json({ status: 'pending' });
+      // Debug: retorna tudo que o Manus mandou
+      return res.status(200).json({
+        debug: true,
+        manusResponse: taskData
+      });
 
     } catch (e) {
       return res.status(500).json({ error: e.message });

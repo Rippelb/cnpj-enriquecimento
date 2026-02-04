@@ -14,37 +14,28 @@ export default async function handler(req, res) {
   const MANUS_API_KEY = process.env.MANUS_API_KEY || 'sk-XX1MREgcCgnZzOduoy96fNHckUBbquN6xWjObtI_ms5GSmPNhz1IxHsY0ZCpbEPqEqhmf1xsYBfNsy7Xz4iV1_VvA_qB';
   const MANUS_API_URL = 'https://api.manus.ai/v1';
 
-  const PROMPT = `Atue como uma plataforma de inteligência de vendas. Para o(s) CNPJ(s) que fornecerei abaixo, realize um enriquecimento completo seguindo estes critérios:
+  const PROMPT = `Gostaria que você atuasse como uma plataforma de inteligência e prospecção de dados para vendas. Para cada CNPJ que eu enviar para você, quero que você enriqueça ele com:
+-Nome da empresa
+-Segmento (pode ser baseado no google meu negócio)
+-CNAE principal
+-Porte (baseado em classificação do BNDES - https://www.bndes.gov.br/wps/portal/site/home/financiamento/guia/porte-de-empresa)
+-Nivel de atividade (baseado em atividade em redes sociais e site)
+-Estimativa de funcionários
+-Estimativa de faturamento
+-Capital social
+-Fundação
+-Contatos
+-Link de site e redes sociais
 
-Dados Cadastrais: Nome da empresa, CNAE principal, Capital Social e Data de Fundação.
+Esses dados de estimativa, você pode criar uma forma de calcular baseada em dados que você encontrar.
 
-Segmento e Nicho: Identifique o setor de atuação com base no Google Meu Negócio e site oficial.
-
-Classificação de Porte: Utilize a régua do BNDES (Micro, Pequena, Média ou Grande).
-
-Nível de Atividade: Analise a presença digital (frequência de posts no Instagram/Facebook e atualizações no site) para classificar como Baixo, Médio ou Alto.
-
-Estimativa de Funcionários: Busque no LinkedIn da empresa ou estime pela estrutura operacional.
-
-FÓRMULA OBRIGATÓRIA PARA FATURAMENTO ANUAL:
+Para o FATURAMENTO ANUAL, use esta fórmula:
 Faturamento = (Funcionários × Ticket do setor) × Fator
+- Funcionários: use o número que você encontrou
+- Ticket: faturamento médio por funcionário do setor (pesquise)
+- Fator: ajuste entre 0.8 e 1.2
 
-Onde:
-- Funcionários: número estimado de funcionários (busque no LinkedIn)
-- Ticket do setor: faturamento médio por funcionário do setor (pesquise o valor médio do CNAE)
-- Fator: ajuste entre 0.8 e 1.2 baseado em tempo de mercado e presença digital
-
-Exemplo de cálculo:
-- Funcionários: 130 (via LinkedIn)
-- Ticket: R$ 450.000,00 (setor de acessórios/peças)
-- Fator: 1.0
-- Cálculo: (130 × 450.000) × 1.0 = R$ 58.500.000,00/ano
-
-MOSTRE O CÁLCULO COMPLETO com os valores utilizados.
-
-Canais de Contato: Extraia e-mails (comercial e contábil), WhatsApp e links de redes sociais.
-
-Formato de Saída: Apresente os dados em uma tabela organizada, seguida do cálculo de faturamento detalhado.
+Mostre o cálculo do faturamento.
 
 IMPORTANTE: Retorne o relatório COMPLETO diretamente no texto da sua resposta, não crie arquivos separados.`;
 

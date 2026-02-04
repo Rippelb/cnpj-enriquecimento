@@ -3,38 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enriquecimento de CNPJ</title>
+    <title>Sistema de Inteligência e Prospecção de Dados</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 30px 20px;
         }
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
         }
-        h1 {
+        .header {
             text-align: center;
-            color: white;
             margin-bottom: 30px;
-            font-size: 32px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #00d4ff;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
         }
         .subtitle {
-            text-align: center;
-            color: rgba(255,255,255,0.8);
-            margin-bottom: 30px;
-            font-size: 16px;
+            color: #888;
+            font-size: 14px;
         }
         .card {
-            background: white;
-            border-radius: 16px;
+            background: #16213e;
+            border-radius: 12px;
             padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             margin-bottom: 20px;
+            border: 1px solid #0f3460;
         }
         .form-group {
             margin-bottom: 20px;
@@ -42,43 +43,53 @@
         label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-            font-size: 14px;
+            font-weight: 500;
+            color: #00d4ff;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         input {
             width: 100%;
             padding: 14px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            border: 2px solid #0f3460;
+            border-radius: 8px;
             font-size: 16px;
+            background: #1a1a2e;
+            color: #fff;
             transition: all 0.2s;
+        }
+        input::placeholder {
+            color: #555;
         }
         input:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+            border-color: #00d4ff;
+            box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
         }
         .btn {
             width: 100%;
             padding: 16px;
             border: none;
-            border-radius: 10px;
-            font-size: 16px;
+            border-radius: 8px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            color: #1a1a2e;
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102,126,234,0.4);
+            box-shadow: 0 5px 25px rgba(0,212,255,0.3);
         }
         .btn-primary:disabled {
-            background: #ccc;
+            background: #333;
+            color: #666;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
@@ -91,7 +102,7 @@
         .btn-copy:hover {
             background: #218838;
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(40,167,69,0.4);
+            box-shadow: 0 5px 20px rgba(40,167,69,0.3);
         }
         .btn-copy.copied {
             background: #6c757d;
@@ -108,11 +119,11 @@
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
+            border-bottom: 1px solid #0f3460;
         }
         .result-header h2 {
-            font-size: 20px;
-            color: #333;
+            font-size: 18px;
+            color: #00d4ff;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -121,104 +132,77 @@
             content: "✓";
             background: #28a745;
             color: white;
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 12px;
         }
         .result-box {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 12px;
+            background: #0d1b2a;
+            border: 1px solid #1b3a4b;
+            border-radius: 8px;
             padding: 25px;
-            font-size: 14px;
-            line-height: 1.8;
-            max-height: 600px;
-            overflow-y: auto;
-            color: #333;
-        }
-        .result-box .section {
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e9ecef;
-        }
-        .result-box .section:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-        .result-box .section-title {
-            font-weight: 700;
-            color: #667eea;
+            font-family: 'Consolas', 'Monaco', monospace;
             font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            line-height: 1.7;
+            max-height: 700px;
+            overflow-y: auto;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
-        .result-box .section-title::before {
-            content: "";
-            width: 4px;
-            height: 16px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 2px;
+        .result-box .report-title {
+            color: #00d4ff;
+            font-weight: bold;
+            font-size: 14px;
         }
-        .result-box .field {
-            display: flex;
-            padding: 6px 0;
+        .result-box .section-header {
+            color: #ffd700;
+            font-weight: bold;
+            margin-top: 15px;
         }
-        .result-box .field-label {
-            font-weight: 600;
-            color: #555;
-            min-width: 180px;
-            flex-shrink: 0;
+        .result-box .subsection {
+            color: #00d4ff;
         }
-        .result-box .field-value {
+        .result-box .label {
+            color: #888;
+        }
+        .result-box .value {
+            color: #fff;
+        }
+        .result-box .separator {
             color: #333;
-            word-break: break-word;
-        }
-        .result-box .field-value a {
-            color: #667eea;
-            text-decoration: none;
-        }
-        .result-box .field-value a:hover {
-            text-decoration: underline;
-        }
-        .result-raw {
-            display: none;
         }
         .loading {
             text-align: center;
             padding: 50px;
-            color: #666;
         }
         .loading-spinner {
             width: 50px;
             height: 50px;
-            border: 4px solid #e0e0e0;
-            border-top-color: #667eea;
+            border: 3px solid #0f3460;
+            border-top-color: #00d4ff;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto 25px;
         }
         .loading p {
             font-size: 16px;
+            color: #00d4ff;
             margin-bottom: 8px;
         }
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
         .error {
-            background: #fff5f5;
-            border: 1px solid #fed7d7;
-            color: #c53030;
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid #dc3545;
+            color: #ff6b6b;
             padding: 15px 20px;
-            border-radius: 10px;
+            border-radius: 8px;
             margin-top: 20px;
             display: flex;
             align-items: center;
@@ -229,18 +213,33 @@
             font-size: 18px;
         }
         .status-text {
-            font-size: 14px;
-            color: #888;
-        }
-        .toggle-view {
             font-size: 13px;
-            color: #667eea;
-            cursor: pointer;
-            text-decoration: underline;
-            margin-left: auto;
+            color: #666;
         }
-        .toggle-view:hover {
-            color: #764ba2;
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #0f3460;
+        }
+        .stat {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            background: #1a1a2e;
+            border-radius: 8px;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+        .stat-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            margin-top: 5px;
         }
 
         /* Scrollbar estilizada */
@@ -248,42 +247,53 @@
             width: 8px;
         }
         .result-box::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: #0d1b2a;
             border-radius: 4px;
         }
         .result-box::-webkit-scrollbar-thumb {
-            background: #ccc;
+            background: #1b3a4b;
             border-radius: 4px;
         }
         .result-box::-webkit-scrollbar-thumb:hover {
-            background: #aaa;
+            background: #2a5a6b;
         }
+
+        /* Highlight de sintaxe para o relatório */
+        .highlight-title { color: #00d4ff; font-weight: bold; }
+        .highlight-section { color: #ffd700; }
+        .highlight-subsection { color: #00d4ff; }
+        .highlight-label { color: #888; }
+        .highlight-value { color: #fff; }
+        .highlight-separator { color: #333; }
+        .highlight-url { color: #4da6ff; text-decoration: underline; cursor: pointer; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Enriquecimento de CNPJ</h1>
-        <p class="subtitle">Busca inteligente de dados empresariais com IA</p>
+        <div class="header">
+            <h1>Sistema de Inteligência e Prospecção</h1>
+            <p class="subtitle">Análise completa de dados empresariais com IA</p>
+        </div>
 
         <div class="card">
             <form id="form">
                 <div class="form-group">
-                    <label>CNPJ *</label>
+                    <label>CNPJ da Empresa</label>
                     <input type="text" id="cnpj" placeholder="00.000.000/0001-00" required>
                 </div>
                 <div class="form-group">
-                    <label>Nome da Empresa (opcional - ajuda na busca)</label>
-                    <input type="text" id="nome" placeholder="Ex: Magazine Luiza">
+                    <label>Nome da Empresa (opcional)</label>
+                    <input type="text" id="nome" placeholder="Ajuda a encontrar informações mais precisas">
                 </div>
                 <button type="submit" class="btn btn-primary" id="submitBtn">
-                    Buscar Dados
+                    Gerar Relatório
                 </button>
             </form>
 
             <div class="loading" id="loading" style="display: none;">
                 <div class="loading-spinner"></div>
-                <p>Buscando dados oficiais...</p>
-                <p class="status-text" id="statusText">Criando consulta...</p>
+                <p>Gerando relatório de inteligência...</p>
+                <p class="status-text" id="statusText">Iniciando análise...</p>
             </div>
 
             <div class="error" id="error" style="display: none;"></div>
@@ -291,20 +301,17 @@
 
         <div class="card result-section" id="resultSection">
             <div class="result-header">
-                <h2>Dados Encontrados</h2>
-                <span class="toggle-view" onclick="toggleView()">Ver texto original</span>
+                <h2>Relatório Gerado</h2>
             </div>
             <div class="result-box" id="resultBox"></div>
-            <div class="result-raw" id="resultRaw"></div>
             <button class="btn btn-copy" id="copyBtn" onclick="copiarResultado()">
-                Copiar para CRM
+                Copiar Relatório Completo
             </button>
         </div>
     </div>
 
     <script>
         let rawText = '';
-        let showingRaw = false;
 
         // Mascara CNPJ
         document.getElementById('cnpj').addEventListener('input', (e) => {
@@ -316,95 +323,34 @@
             e.target.value = v;
         });
 
-        // Formata o resultado para exibição bonita
-        function formatResult(text) {
-            // Converte links em HTML
-            const linkify = (str) => {
-                return str.replace(/(https?:\/\/[^\s\)]+)/g, '<a href="$1" target="_blank">$1</a>');
-            };
+        // Formata o relatório com syntax highlighting
+        function formatReport(text) {
+            // Escape HTML
+            let html = text
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
 
-            // Remove marcações markdown
-            let cleaned = text
-                .replace(/\*\*/g, '')
-                .replace(/\*/g, '')
-                .replace(/###\s*/g, '')
-                .replace(/##\s*/g, '')
-                .replace(/#\s*/g, '')
-                .replace(/\|/g, '')
-                .replace(/---+/g, '')
-                .replace(/:---/g, '');
+            // Highlight URLs
+            html = html.replace(/(https?:\/\/[^\s\)]+)/g, '<a href="$1" target="_blank" class="highlight-url">$1</a>');
 
-            const lines = cleaned.split('\n').filter(l => l.trim());
-            let html = '';
-            let currentSection = '';
-            let sectionContent = [];
+            // Highlight separadores
+            html = html.replace(/(={10,})/g, '<span class="highlight-separator">$1</span>');
+            html = html.replace(/(-{10,})/g, '<span class="highlight-separator">$1</span>');
 
-            const sectionKeywords = [
-                'DADOS CADASTRAIS', 'DADOS OFICIAIS', 'INFORMAÇÕES CADASTRAIS',
-                'CONTATO', 'CONTATOS', 'DADOS DE CONTATO',
-                'REDES SOCIAIS', 'PRESENÇA DIGITAL', 'MÍDIAS SOCIAIS',
-                'DADOS COMPLEMENTARES', 'INFORMAÇÕES ADICIONAIS', 'OUTROS',
-                'ENDEREÇO', 'LOCALIZAÇÃO',
-                'SÓCIOS', 'QUADRO SOCIETÁRIO', 'SOCIETÁRIO'
-            ];
+            // Highlight títulos de seção (números seguidos de ponto e texto em maiúsculas)
+            html = html.replace(/^(\d+\.\s+[A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ\s]+)$/gm, '<span class="highlight-section">$1</span>');
 
-            const isSection = (line) => {
-                const upper = line.toUpperCase().trim();
-                return sectionKeywords.some(k => upper.includes(k)) ||
-                       (upper.length < 40 && upper === upper.toUpperCase() && !upper.includes(':'));
-            };
+            // Highlight subseções (números tipo 1.1, 1.2, etc)
+            html = html.replace(/^(\d+\.\d+\s+[A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ\s]+)$/gm, '<span class="highlight-subsection">$1</span>');
 
-            const flushSection = () => {
-                if (sectionContent.length > 0) {
-                    html += '<div class="section">';
-                    if (currentSection) {
-                        html += `<div class="section-title">${currentSection}</div>`;
-                    }
-                    sectionContent.forEach(line => {
-                        const parts = line.split(':');
-                        if (parts.length >= 2 && parts[0].trim().length < 50) {
-                            const label = parts[0].trim();
-                            const value = linkify(parts.slice(1).join(':').trim());
-                            html += `<div class="field"><span class="field-label">${label}:</span><span class="field-value">${value}</span></div>`;
-                        } else {
-                            html += `<div class="field"><span class="field-value">${linkify(line)}</span></div>`;
-                        }
-                    });
-                    html += '</div>';
-                    sectionContent = [];
-                }
-            };
+            // Highlight título principal
+            html = html.replace(/(RELATÓRIO DE INTELIGÊNCIA E PROSPECÇÃO DE DADOS)/g, '<span class="highlight-title">$1</span>');
 
-            lines.forEach(line => {
-                const trimmed = line.trim();
-                if (!trimmed) return;
+            // Highlight labels (texto seguido de dois pontos)
+            html = html.replace(/^([A-Za-záàâãéèêíïóôõöúçÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ\s]+:)(\s*)/gm, '<span class="highlight-label">$1</span>$2');
 
-                if (isSection(trimmed)) {
-                    flushSection();
-                    currentSection = trimmed.replace(/[:\-]/g, '').trim();
-                } else {
-                    sectionContent.push(trimmed);
-                }
-            });
-
-            flushSection();
-
-            return html || `<div class="section"><div class="field"><span class="field-value">${linkify(text.replace(/\n/g, '<br>'))}</span></div></div>`;
-        }
-
-        function toggleView() {
-            const resultBox = document.getElementById('resultBox');
-            const toggle = document.querySelector('.toggle-view');
-
-            showingRaw = !showingRaw;
-
-            if (showingRaw) {
-                resultBox.innerHTML = `<pre style="white-space: pre-wrap; font-family: inherit; margin: 0;">${rawText}</pre>`;
-                toggle.textContent = 'Ver formatado';
-            } else {
-                resultBox.innerHTML = formatResult(rawText);
-                toggle.textContent = 'Ver texto original';
-            }
+            return html;
         }
 
         // Funcao para checar status da task
@@ -435,8 +381,7 @@
             loading.style.display = 'block';
             error.style.display = 'none';
             resultSection.classList.remove('active');
-            statusText.textContent = 'Criando consulta...';
-            showingRaw = false;
+            statusText.textContent = 'Iniciando análise...';
 
             try {
                 // Criar task
@@ -449,58 +394,64 @@
                 const createData = await createResponse.json();
 
                 if (!createResponse.ok) {
-                    throw new Error(createData.error || 'Erro ao criar consulta');
+                    throw new Error(createData.error || 'Erro ao iniciar análise');
                 }
 
                 const taskId = createData.taskId;
-                statusText.textContent = 'Buscando em fontes oficiais...';
 
                 // Polling para checar status
                 let attempts = 0;
-                const maxAttempts = 120;
+                const maxAttempts = 180; // 15 minutos
+
+                const messages = [
+                    'Consultando bases oficiais...',
+                    'Buscando dados cadastrais...',
+                    'Analisando Receita Federal...',
+                    'Verificando situação cadastral...',
+                    'Coletando dados econômicos...',
+                    'Pesquisando redes sociais...',
+                    'Analisando presença digital...',
+                    'Buscando informações de contato...',
+                    'Identificando quadro societário...',
+                    'Analisando segmento de atuação...',
+                    'Calculando estimativas...',
+                    'Gerando análise SWOT...',
+                    'Compilando relatório...',
+                    'Finalizando análise...'
+                ];
 
                 while (attempts < maxAttempts) {
                     await new Promise(r => setTimeout(r, 5000));
                     attempts++;
 
-                    const messages = [
-                        'Consultando Receita Federal...',
-                        'Buscando dados cadastrais...',
-                        'Verificando redes sociais...',
-                        'Coletando informações de contato...',
-                        'Processando dados...',
-                        'Finalizando busca...'
-                    ];
-                    statusText.textContent = messages[Math.min(Math.floor(attempts / 3), messages.length - 1)] + ` (${attempts * 5}s)`;
+                    const msgIndex = Math.min(Math.floor(attempts / 4), messages.length - 1);
+                    statusText.textContent = messages[msgIndex] + ` (${attempts * 5}s)`;
 
                     try {
                         const statusData = await checkTaskStatus(taskId);
 
                         if (statusData.status === 'completed') {
                             rawText = statusData.resultado;
-                            document.getElementById('resultBox').innerHTML = formatResult(rawText);
-                            document.getElementById('resultRaw').textContent = rawText;
+                            document.getElementById('resultBox').innerHTML = formatReport(rawText);
                             resultSection.classList.add('active');
-                            document.getElementById('copyBtn').textContent = 'Copiar para CRM';
+                            document.getElementById('copyBtn').textContent = 'Copiar Relatório Completo';
                             document.getElementById('copyBtn').classList.remove('copied');
-                            document.querySelector('.toggle-view').textContent = 'Ver texto original';
                             loading.style.display = 'none';
                             btn.disabled = false;
 
-                            // Scroll para o resultado
                             resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                             return;
                         }
 
                         if (statusData.status === 'failed') {
-                            throw new Error(statusData.error || 'Falha na busca');
+                            throw new Error(statusData.error || 'Falha na análise');
                         }
                     } catch (pollError) {
                         console.log('Tentando novamente...', pollError);
                     }
                 }
 
-                throw new Error('Timeout: a busca demorou demais');
+                throw new Error('Timeout: a análise demorou demais');
 
             } catch (err) {
                 error.textContent = err.message;
@@ -518,7 +469,7 @@
                 btn.textContent = 'Copiado!';
                 btn.classList.add('copied');
                 setTimeout(() => {
-                    btn.textContent = 'Copiar para CRM';
+                    btn.textContent = 'Copiar Relatório Completo';
                     btn.classList.remove('copied');
                 }, 2000);
             });

@@ -24,11 +24,27 @@ Classificação de Porte: Utilize a régua do BNDES (Micro, Pequena, Média ou G
 
 Nível de Atividade: Analise a presença digital (frequência de posts no Instagram/Facebook e atualizações no site) para classificar como Baixo, Médio ou Alto.
 
-Estimativas (Cálculo Próprio): Estime o número de funcionários e o faturamento anual cruzando Capital Social, CNAE, tempo de mercado e robustez da presença digital.
+Estimativa de Funcionários: Busque no LinkedIn da empresa ou estime pela estrutura operacional.
+
+FÓRMULA OBRIGATÓRIA PARA FATURAMENTO ANUAL:
+Faturamento = (Funcionários × Ticket do setor) × Fator
+
+Onde:
+- Funcionários: número estimado de funcionários (busque no LinkedIn)
+- Ticket do setor: faturamento médio por funcionário do setor (pesquise o valor médio do CNAE)
+- Fator: ajuste entre 0.8 e 1.2 baseado em tempo de mercado e presença digital
+
+Exemplo de cálculo:
+- Funcionários: 130 (via LinkedIn)
+- Ticket: R$ 450.000,00 (setor de acessórios/peças)
+- Fator: 1.0
+- Cálculo: (130 × 450.000) × 1.0 = R$ 58.500.000,00/ano
+
+MOSTRE O CÁLCULO COMPLETO com os valores utilizados.
 
 Canais de Contato: Extraia e-mails (comercial e contábil), WhatsApp e links de redes sociais.
 
-Formato de Saída: Apresente os dados em uma tabela organizada, seguida de uma breve nota explicativa sobre a lógica usada para as estimativas financeiras.
+Formato de Saída: Apresente os dados em uma tabela organizada, seguida do cálculo de faturamento detalhado.
 
 IMPORTANTE: Retorne o relatório COMPLETO diretamente no texto da sua resposta, não crie arquivos separados.`;
 

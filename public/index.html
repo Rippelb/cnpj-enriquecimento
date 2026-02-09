@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Inteligência e Prospecção de Dados</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #00d4ff;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #888;
+            font-size: 14px;
+        }
+        .card {
+            background: #16213e;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 1px solid #0f3460;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #00d4ff;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #0f3460;
+            border-radius: 8px;
+            font-size: 16px;
+            background: #1a1a2e;
+            color: #fff;
+            transition: all 0.2s;
+        }
+        input::placeholder {
+            color: #555;
+        }
+        input:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
+        }
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            color: #1a1a2e;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 25px rgba(0,212,255,0.3);
+        }
+        .btn-primary:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .btn-copy {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            color: white;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-copy:hover {
+            background: linear-gradient(135deg, #2dbe4e 0%, #28a745 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(40,167,69,0.3);
+        }
+        .btn-copy.copied {
+            background: #6c757d;
+        }
+        .result-section {
+            display: none;
+        }
+        .result-section.active {
+            display: block;
+        }
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #0f3460;
+        }
+        .result-header h2 {
+            font-size: 18px;
+            color: #00d4ff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .result-header h2::before {
+            content: "\2713";
+            background: #28a745;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        /* ========== RESULT CARDS ========== */
+        .result-card {
+            background: #0d1b2a;
+            border: 1px solid #1b3a4b;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        .result-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+            border-bottom: 1px solid #1b3a4b;
+        }
+        .result-card-header .card-icon {
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 8px;
+        }
+        .result-card-header .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #ffd700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .result-card-body {
+            padding: 20px;
+        }
+
+        /* Field grid — 2 columns */
+        .field-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .field-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .field-item.full-width {
+            grid-column: 1 / -1;
+        }
+        .field-label {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+        .field-value {
+            font-size: 14px;
+            color: #fff;
+            word-break: break-word;
+        }
+        .field-value a {
+            color: #4da6ff;
+            text-decoration: none;
+        }
+        .field-value a:hover {
+            text-decoration: underline;
+        }
+        .field-value.empty {
+            color: #555;
+            font-style: italic;
+        }
+
+        /* Social grid — mini cards */
+        .social-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .social-card {
+            background: #16213e;
+            border: 1px solid #0f3460;
+            border-radius: 8px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .social-card .social-name {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .social-card .social-handle {
+            font-size: 13px;
+            color: #fff;
+            word-break: break-all;
+        }
+        .social-card .social-handle a {
+            color: #4da6ff;
+            text-decoration: none;
+        }
+        .social-card .social-handle a:hover {
+            text-decoration: underline;
+        }
+        .social-card .social-followers {
+            font-size: 11px;
+            color: #aaa;
+        }
+
+        /* Activity score bar */
+        .score-bar-container {
+            margin-bottom: 20px;
+        }
+        .score-bar-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .score-bar-label span:first-child {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        .score-bar-label .score-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        .score-bar {
+            height: 10px;
+            background: #16213e;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+        .score-bar-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.8s ease;
+        }
+        .score-bar-fill.score-low { background: linear-gradient(90deg, #dc3545, #e74c3c); }
+        .score-bar-fill.score-mid { background: linear-gradient(90deg, #ffc107, #f0ad4e); }
+        .score-bar-fill.score-high { background: linear-gradient(90deg, #28a745, #20c997); }
+
+        /* Confidence badge */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge-green {
+            background: rgba(40, 167, 69, 0.2);
+            color: #51cf66;
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+        .badge-yellow {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffd43b;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+        .badge-red {
+            background: rgba(220, 53, 69, 0.2);
+            color: #ff6b6b;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+
+        /* Methodology collapsible */
+        .methodology-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: 12px 16px;
+            background: #16213e;
+            border-radius: 8px;
+            border: 1px solid #0f3460;
+            transition: background 0.2s;
+            user-select: none;
+        }
+        .methodology-toggle:hover {
+            background: #1a2744;
+        }
+        .methodology-toggle span {
+            font-size: 13px;
+            color: #aaa;
+        }
+        .methodology-toggle .toggle-arrow {
+            color: #888;
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+        .methodology-toggle.open .toggle-arrow {
+            transform: rotate(180deg);
+        }
+        .methodology-content {
+            display: none;
+            padding: 16px;
+            font-size: 13px;
+            color: #aaa;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border: 1px solid #0f3460;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            background: #0a1628;
+        }
+        .methodology-content.open {
+            display: block;
+        }
+
+        /* Fallback raw result box */
+        .result-box {
+            background: #0d1b2a;
+            border: 1px solid #1b3a4b;
+            border-radius: 8px;
+            padding: 25px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            max-height: 700px;
+            overflow-y: auto;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .result-box .report-title {
+            color: #00d4ff;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .result-box .section-header {
+            color: #ffd700;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        .result-box .subsection {
+            color: #00d4ff;
+        }
+        .result-box .label {
+            color: #888;
+        }
+        .result-box .value {
+            color: #fff;
+        }
+        .result-box .separator {
+            color: #333;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+        }
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #0f3460;
+            border-top-color: #00d4ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 25px;
+        }
+        .loading p {
+            font-size: 16px;
+            color: #00d4ff;
+            margin-bottom: 8px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .error {
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid #dc3545;
+            color: #ff6b6b;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .error::before {
+            content: "\26A0";
+            font-size: 18px;
+        }
+        .status-text {
+            font-size: 13px;
+            color: #666;
+        }
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #0f3460;
+        }
+        .stat {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            background: #1a1a2e;
+            border-radius: 8px;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+        .stat-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        /* Scrollbar estilizada */
+        .result-box::-webkit-scrollbar {
+            width: 8px;
+        }
+        .result-box::-webkit-scrollbar-track {
+            background: #0d1b2a;
+            border-radius: 4px;
+        }
+        .result-box::-webkit-scrollbar-thumb {
+            background: #1b3a4b;
+            border-radius: 4px;
+        }
+        .result-box::-webkit-scrollbar-thumb:hover {
+            background: #2a5a6b;
+        }
+
+        /* Highlight de sintaxe para o relatorio */
+        .highlight-title { color: #00d4ff; font-weight: bold; }
+        .highlight-section { color: #ffd700; }
+        .highlight-subsection { color: #00d4ff; }
+        .highlight-label { color: #888; }
+        .highlight-value { color: #fff; }
+        .highlight-separator { color: #333; }
+        .highlight-url { color: #4da6ff; text-decoration: underline; cursor: pointer; }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .field-grid {
+                grid-template-columns: 1fr;
+            }
+            .social-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Sistema de Inteligência e Prospecção</h1>
+            <p class="subtitle">Análise completa de dados empresariais com IA</p>
+        </div>
+
+        <div class="card">
+            <form id="form">
+                <div class="form-group">
+                    <label>CNPJ da Empresa</label>
+                    <input type="text" id="cnpj" placeholder="00.000.000/0001-00" required>
+                </div>
+                <div class="form-group">
+                    <label>Nome da Empresa (opcional)</label>
+                    <input type="text" id="nome" placeholder="Ajuda a encontrar informações mais precisas">
+                </div>
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    Gerar Relatório
+                </button>
+            </form>
+
+            <div class="loading" id="loading" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p>Gerando relatório de inteligência...</p>
+                <p class="status-text" id="statusText">Iniciando análise...</p>
+            </div>
+
+            <div class="error" id="error" style="display: none;"></div>
+        </div>
+
+        <div class="card result-section" id="resultSection">
+            <div class="result-header">
+                <h2>Relatório Gerado</h2>
+            </div>
+
+            <!-- Structured results (when JSON parses) -->
+            <div id="resultsContainer" style="display: none;"></div>
+
+            <!-- Fallback raw text (when JSON fails) -->
+            <div class="result-box" id="fallbackResultBox" style="display: none;"></div>
+
+            <button class="btn btn-copy" id="copyBtn" onclick="copiarResultado()">
+                &#x1F4CB; Copiar para PipeRun
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let rawText = '';
+        let plainTextForCopy = '';
+        let parsedData = null;
+
+        // Mascara CNPJ
+        document.getElementById('cnpj').addEventListener('input', (e) => {
+            let v = e.target.value.replace(/\D/g, '').slice(0, 14);
+            if (v.length > 12) v = v.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
+            else if (v.length > 8) v = v.replace(/^(\d{2})(\d{3})(\d{3})(\d+)$/, '$1.$2.$3/$4');
+            else if (v.length > 5) v = v.replace(/^(\d{2})(\d{3})(\d+)$/, '$1.$2.$3');
+            else if (v.length > 2) v = v.replace(/^(\d{2})(\d+)$/, '$1.$2');
+            e.target.value = v;
+        });
+
+        // ========== EXTRACT JSON ==========
+        function extractJSON(raw) {
+            if (!raw || typeof raw !== 'string') return null;
+
+            // Strategy 1: markdown code fence ```json ... ```
+            const fenceMatch = raw.match(/```json\s*([\s\S]*?)```/);
+            if (fenceMatch) {
+                try {
+                    return JSON.parse(fenceMatch[1].trim());
+                } catch (e) { /* continue */ }
+            }
+
+            // Strategy 2: direct parse
+            try {
+                return JSON.parse(raw.trim());
+            } catch (e) { /* continue */ }
+
+            // Strategy 3: find outermost { ... }
+            const firstBrace = raw.indexOf('{');
+            const lastBrace = raw.lastIndexOf('}');
+            if (firstBrace !== -1 && lastBrace > firstBrace) {
+                try {
+                    return JSON.parse(raw.substring(firstBrace, lastBrace + 1));
+                } catch (e) { /* continue */ }
+            }
+
+            return null;
+        }
+
+        // ========== HELPERS ==========
+        function esc(str) {
+            if (str === null || str === undefined) return '';
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function val(v) {
+            if (v === null || v === undefined || v === '' || v === 'N/A' || v === 'Não disponível' || v === 'Não encontrado') {
+                return '<span class="empty">Não disponível</span>';
+            }
+            return esc(String(v));
+        }
+
+        function linkify(url, text) {
+            if (!url || url === 'N/A' || url === 'Não disponível' || url === 'Não encontrado') {
+                return '<span class="empty">Não disponível</span>';
+            }
+            const safeUrl = esc(url);
+            const safeText = esc(text || url);
+            return '<a href="' + safeUrl + '" target="_blank" rel="noopener">' + safeText + '</a>';
+        }
+
+        function fieldItem(label, value, fullWidth) {
+            const cls = fullWidth ? ' full-width' : '';
+            return '<div class="field-item' + cls + '">' +
+                '<div class="field-label">' + esc(label) + '</div>' +
+                '<div class="field-value">' + value + '</div>' +
+                '</div>';
+        }
+
+        function getNestedValue(obj, path) {
+            if (!obj) return undefined;
+            const parts = path.split('.');
+            let current = obj;
+            for (const part of parts) {
+                if (current === null || current === undefined) return undefined;
+                current = current[part];
+            }
+            return current;
+        }
+
+        function findValue(data, keys) {
+            for (const key of keys) {
+                const v = getNestedValue(data, key);
+                if (v !== undefined && v !== null && v !== '') return v;
+            }
+            return undefined;
+        }
+
+        // ========== RENDER RESULTS ==========
+        // Manus returns a FLAT JSON (all fields at root level), so we read
+        // directly from `data.*` with fallback lookups for alternate key names.
+        function renderResults(data) {
+            let html = '';
+
+            // --- 1. Dados Cadastrais ---
+            html += '<div class="result-card">';
+            html += '<div class="result-card-header"><span class="card-icon">&#x1F3E2;</span><span class="card-title">Dados Cadastrais</span></div>';
+            html += '<div class="result-card-body"><div class="field-grid">';
+
+            html += fieldItem('Razão Social', val(findValue(data, ['razao_social', 'razaoSocial'])));
+            html += fieldItem('Nome Fantasia', val(findValue(data, ['nome_fantasia', 'nomeFantasia'])));
+            html += fieldItem('CNPJ', val(findValue(data, ['cnpj', 'CNPJ'])));
+            html += fieldItem('Data de Fundação', val(findValue(data, ['data_fundacao', 'dataFundacao', 'data_abertura'])));
+            html += fieldItem('Capital Social', val(findValue(data, ['capital_social', 'capitalSocial'])));
+            html += fieldItem('Situação Cadastral', val(findValue(data, ['situacao_cadastral', 'situacaoCadastral'])));
+
+            // CNAE can be object {codigo, descricao} or string
+            const cnaeRaw = findValue(data, ['cnae_principal', 'cnaePrincipal', 'cnae']);
+            let cnaeStr = '';
+            if (typeof cnaeRaw === 'object' && cnaeRaw) {
+                cnaeStr = [cnaeRaw.codigo, cnaeRaw.descricao].filter(Boolean).join(' - ');
+            } else {
+                cnaeStr = cnaeRaw;
+            }
+            html += fieldItem('CNAE Principal', val(cnaeStr), true);
+
+            html += fieldItem('Segmento', val(findValue(data, ['segmento_principal', 'segmento', 'setor'])));
+            html += fieldItem('Nicho', val(findValue(data, ['nicho_de_mercado', 'nicho', 'nicho_mercado'])));
+
+            const end = findValue(data, ['endereco', 'endereço']);
+            let endStr = '';
+            if (typeof end === 'object' && end) {
+                const parts = [end.logradouro, end.numero, end.complemento, end.bairro, end.cidade || end.municipio, end.uf || end.estado, end.cep].filter(Boolean);
+                endStr = parts.join(', ');
+            } else {
+                endStr = end;
+            }
+            html += fieldItem('Endereço', val(endStr), true);
+
+            html += '</div></div></div>';
+
+            // --- 2. Porte e Faturamento ---
+            html += '<div class="result-card">';
+            html += '<div class="result-card-header"><span class="card-icon">&#x1F4CA;</span><span class="card-title">Porte e Faturamento</span></div>';
+            html += '<div class="result-card-body"><div class="field-grid">';
+
+            html += fieldItem('Classificação BNDES', val(findValue(data, ['classificacao_porte_bndes', 'classificacao_bndes', 'porte_bndes'])));
+            html += fieldItem('Faixa de Receita', val(findValue(data, ['faixa_receita_bndes', 'faixa_faturamento', 'faixa'])));
+            html += fieldItem('Funcionários (Faixa)', val(findValue(data, ['faixa_estimada_funcionarios', 'faixa_funcionarios'])));
+            html += fieldItem('Funcionários (Estimativa)', val(findValue(data, ['estimativa_final_funcionarios', 'funcionarios', 'num_funcionarios'])));
+            html += fieldItem('Faturamento (Faixa)', val(findValue(data, ['estimativa_faturamento_anual', 'faturamento_anual'])), true);
+            html += fieldItem('Faturamento (Estimativa)', val(findValue(data, ['estimativa_final_faturamento', 'faturamento_estimado', 'faturamento'])), true);
+
+            html += '</div></div></div>';
+
+            // --- 3. Contato ---
+            html += '<div class="result-card">';
+            html += '<div class="result-card-header"><span class="card-icon">&#x1F4DE;</span><span class="card-title">Contato</span></div>';
+            html += '<div class="result-card-body"><div class="field-grid">';
+
+            const tel = findValue(data, ['telefone', 'telefones', 'phone']);
+            const telStr = Array.isArray(tel) ? tel.join(', ') : tel;
+            html += fieldItem('Telefone', val(telStr));
+
+            const email = findValue(data, ['email', 'e-mail', 'emails']);
+            const emailStr = Array.isArray(email) ? email.join(', ') : email;
+            html += fieldItem('E-mail', val(emailStr));
+
+            const site = findValue(data, ['site_oficial', 'site', 'website']);
+            html += fieldItem('Site', site ? linkify(site, site) : val(undefined), true);
+
+            html += '</div></div></div>';
+
+            // --- 4. Presença Digital ---
+            html += '<div class="result-card">';
+            html += '<div class="result-card-header"><span class="card-icon">&#x1F310;</span><span class="card-title">Presença Digital</span></div>';
+            html += '<div class="result-card-body">';
+
+            // Score bar — Manus returns nivel_atividade_digital: { score: "X/5", ... }
+            const nad = findValue(data, ['nivel_atividade_digital']);
+            let scoreRaw = '';
+            let scoreClassificacao = '';
+            if (typeof nad === 'object' && nad) {
+                scoreRaw = nad.score || '';
+                scoreClassificacao = nad.classificacao || '';
+            } else {
+                scoreRaw = nad || '';
+            }
+            // Parse "4/5" or "4.0/5" or just "4"
+            const scoreNum = parseFloat(String(scoreRaw).replace(/\/.*$/, '')) || 0;
+            const maxScore = 5;
+            const pct = Math.min((scoreNum / maxScore) * 100, 100);
+            const scoreClass = scoreNum <= 1.5 ? 'score-low' : (scoreNum <= 3.5 ? 'score-mid' : 'score-high');
+
+            html += '<div class="score-bar-container">';
+            html += '<div class="score-bar-label"><span>Score de Atividade Digital' + (scoreClassificacao ? ' (' + esc(scoreClassificacao) + ')' : '') + '</span><span class="score-value">' + esc(scoreNum.toFixed(1)) + ' / ' + maxScore + '</span></div>';
+            html += '<div class="score-bar"><div class="score-bar-fill ' + scoreClass + '" style="width:' + pct + '%"></div></div>';
+            html += '</div>';
+
+            // Social mini cards — Manus puts these at root level
+            html += '<div class="social-grid">';
+
+            const socials = [
+                { name: 'LinkedIn', icon: '&#x1F517;', keys: ['linkedin'] },
+                { name: 'Instagram', icon: '&#x1F4F7;', keys: ['instagram'] },
+                { name: 'Facebook', icon: '&#x1F465;', keys: ['facebook'] },
+                { name: 'YouTube', icon: '&#x1F3AC;', keys: ['youtube'] }
+            ];
+
+            for (const s of socials) {
+                let sData = findValue(data, s.keys);
+                let url = '', handle = '', followers = '';
+
+                if (typeof sData === 'object' && sData) {
+                    url = sData.url || sData.link || '';
+                    handle = sData.perfil || sData.pagina || sData.canal || sData.handle || sData.usuario || '';
+                    followers = sData.seguidores || sData.followers || '';
+                } else if (typeof sData === 'string') {
+                    if (sData.startsWith('http')) {
+                        url = sData;
+                    } else {
+                        handle = sData;
+                    }
+                }
+
+                html += '<div class="social-card">';
+                html += '<div class="social-name">' + s.icon + ' ' + s.name + '</div>';
+                if (url) {
+                    html += '<div class="social-handle">' + linkify(url, handle || url) + '</div>';
+                } else if (handle) {
+                    html += '<div class="social-handle">' + esc(handle) + '</div>';
+                } else {
+                    html += '<div class="social-handle"><span class="empty">Não encontrado</span></div>';
+                }
+                if (followers) {
+                    html += '<div class="social-followers">' + esc(followers) + ' seguidores</div>';
+                }
+                html += '</div>';
+            }
+
+            html += '</div></div></div>';
+
+            // --- 5. Reputação ---
+            html += '<div class="result-card">';
+            html += '<div class="result-card-header"><span class="card-icon">&#x2B50;</span><span class="card-title">Reputação</span></div>';
+            html += '<div class="result-card-body"><div class="field-grid">';
+
+            // Glassdoor — Manus: { classificacao: "X.X/5.0", numero_avaliacoes: "X", url: "" }
+            const glassdoor = findValue(data, ['glassdoor']);
+            let glassdoorStr = '';
+            if (typeof glassdoor === 'object' && glassdoor) {
+                const nota = glassdoor.classificacao || glassdoor.nota || glassdoor.rating || '';
+                const aval = glassdoor.numero_avaliacoes || glassdoor.avaliacoes || '';
+                glassdoorStr = nota + (aval ? ' (' + aval + ' avaliações)' : '');
+            } else {
+                glassdoorStr = glassdoor;
+            }
+            html += fieldItem('Glassdoor', val(glassdoorStr));
+
+            // Reclame Aqui — Manus: { status: "Bom", nota: "7.5", url: "" }
+            const reclame = findValue(data, ['reclame_aqui', 'reclameAqui']);
+            let reclameStr = '';
+            if (typeof reclame === 'object' && reclame) {
+                reclameStr = (reclame.status || reclame.reputacao || '') + (reclame.nota ? ' - Nota ' + reclame.nota : '');
+            } else {
+                reclameStr = reclame;
+            }
+            html += fieldItem('Reclame Aqui', val(reclameStr));
+
+            // GPTW + certificações — Manus: certificacoes: { gptw: "Sim/Não", outras: [] }
+            const certsObj = findValue(data, ['certificacoes', 'certificações']);
+            let gptwStr = '';
+            let certStr = '';
+            if (typeof certsObj === 'object' && certsObj) {
+                gptwStr = certsObj.gptw || '';
+                const outras = certsObj.outras || [];
+                certStr = Array.isArray(outras) ? outras.join(', ') : outras;
+            }
+            html += fieldItem('GPTW', val(gptwStr));
+            html += fieldItem('Outras Certificações', val(certStr), true);
+
+            html += '</div></div></div>';
+
+            // --- 6. Metodologia (collapsible) ---
+            const calcFunc = findValue(data, ['calculo_detalhado_funcionarios']);
+            const metFat = findValue(data, ['metodologia_faturamento']);
+            if (calcFunc || metFat) {
+                let metParts = [];
+                if (calcFunc) {
+                    metParts.push('--- Cálculo de Funcionários ---');
+                    if (typeof calcFunc === 'object') {
+                        for (const [k, v] of Object.entries(calcFunc)) {
+                            metParts.push(k.replace(/_/g, ' ') + ': ' + v);
+                        }
+                    } else {
+                        metParts.push(String(calcFunc));
+                    }
+                }
+                if (metFat) {
+                    metParts.push('');
+                    metParts.push('--- Metodologia de Faturamento ---');
+                    metParts.push(typeof metFat === 'object' ? JSON.stringify(metFat, null, 2) : String(metFat));
+                }
+                const metText = metParts.join('\n');
+
+                html += '<div class="result-card">';
+                html += '<div class="result-card-header"><span class="card-icon">&#x1F9EA;</span><span class="card-title">Metodologia</span></div>';
+                html += '<div class="result-card-body">';
+                html += '<div class="methodology-toggle" onclick="toggleMethodology(this)">';
+                html += '<span>Ver detalhes do cálculo e metodologia</span>';
+                html += '<span class="toggle-arrow">&#x25BC;</span>';
+                html += '</div>';
+                html += '<div class="methodology-content">' + esc(metText) + '</div>';
+                html += '</div></div>';
+            }
+
+            // --- 7. Informações da Pesquisa ---
+            html += '<div class="result-card">';
+            html += '<div class="result-card-header"><span class="card-icon">&#x2139;&#xFE0F;</span><span class="card-title">Informações da Pesquisa</span></div>';
+            html += '<div class="result-card-body"><div class="field-grid">';
+
+            const conf = findValue(data, ['nivel_confianca_geral', 'nivel_confianca', 'confianca']);
+            let confHtml = '';
+            if (conf) {
+                const confStr = String(conf).toLowerCase();
+                if (confStr.includes('alta') || confStr.includes('high')) {
+                    confHtml = '<span class="badge badge-green">' + esc(conf) + '</span>';
+                } else if (confStr.includes('media') || confStr.includes('média') || confStr.includes('medium')) {
+                    confHtml = '<span class="badge badge-yellow">' + esc(conf) + '</span>';
+                } else {
+                    confHtml = '<span class="badge badge-red">' + esc(conf) + '</span>';
+                }
+            } else {
+                confHtml = val(undefined);
+            }
+            html += fieldItem('Nível de Confiança', confHtml);
+
+            html += fieldItem('Data da Pesquisa', val(findValue(data, ['data_pesquisa', 'data'])));
+
+            const fontes = findValue(data, ['fontes_consultadas', 'fontes', 'sources']);
+            const fontesStr = Array.isArray(fontes) ? fontes.join(', ') : fontes;
+            html += fieldItem('Fontes Consultadas', val(fontesStr), true);
+
+            const obs = findValue(data, ['observacoes', 'observações']);
+            if (obs) {
+                const obsStr = Array.isArray(obs) ? obs.join('; ') : obs;
+                html += fieldItem('Observações', val(obsStr), true);
+            }
+
+            html += '</div></div></div>';
+
+            return html;
+        }
+
+        // ========== GENERATE PLAIN TEXT ==========
+        // Reads from flat Manus JSON structure (all fields at root)
+        function generatePlainText(data) {
+            let lines = [];
+
+            lines.push('=== DADOS CADASTRAIS ===');
+            lines.push('Razão Social: ' + (findValue(data, ['razao_social', 'razaoSocial']) || 'N/A'));
+            lines.push('Nome Fantasia: ' + (findValue(data, ['nome_fantasia', 'nomeFantasia']) || 'N/A'));
+            lines.push('CNPJ: ' + (findValue(data, ['cnpj', 'CNPJ']) || 'N/A'));
+            lines.push('Data de Fundação: ' + (findValue(data, ['data_fundacao', 'dataFundacao', 'data_abertura']) || 'N/A'));
+            lines.push('Capital Social: ' + (findValue(data, ['capital_social', 'capitalSocial']) || 'N/A'));
+            lines.push('Situação Cadastral: ' + (findValue(data, ['situacao_cadastral', 'situacaoCadastral']) || 'N/A'));
+
+            const cnaeRaw = findValue(data, ['cnae_principal', 'cnaePrincipal', 'cnae']);
+            let cnaeStr = 'N/A';
+            if (typeof cnaeRaw === 'object' && cnaeRaw) {
+                cnaeStr = [cnaeRaw.codigo, cnaeRaw.descricao].filter(Boolean).join(' - ') || 'N/A';
+            } else if (cnaeRaw) {
+                cnaeStr = String(cnaeRaw);
+            }
+            lines.push('CNAE Principal: ' + cnaeStr);
+
+            lines.push('Segmento: ' + (findValue(data, ['segmento_principal', 'segmento', 'setor']) || 'N/A'));
+            lines.push('Nicho: ' + (findValue(data, ['nicho_de_mercado', 'nicho', 'nicho_mercado']) || 'N/A'));
+
+            const end = findValue(data, ['endereco', 'endereço']);
+            let endStr = 'N/A';
+            if (typeof end === 'object' && end) {
+                const parts = [end.logradouro, end.numero, end.complemento, end.bairro, end.cidade || end.municipio, end.uf || end.estado, end.cep].filter(Boolean);
+                endStr = parts.join(', ') || 'N/A';
+            } else if (end) {
+                endStr = String(end);
+            }
+            lines.push('Endereço: ' + endStr);
+
+            lines.push('');
+            lines.push('=== PORTE E FATURAMENTO ===');
+            lines.push('Classificação BNDES: ' + (findValue(data, ['classificacao_porte_bndes', 'classificacao_bndes']) || 'N/A'));
+            lines.push('Faixa de Receita: ' + (findValue(data, ['faixa_receita_bndes', 'faixa_faturamento']) || 'N/A'));
+            lines.push('Funcionários (Faixa): ' + (findValue(data, ['faixa_estimada_funcionarios', 'faixa_funcionarios']) || 'N/A'));
+            lines.push('Funcionários (Estimativa): ' + (findValue(data, ['estimativa_final_funcionarios', 'funcionarios']) || 'N/A'));
+            lines.push('Faturamento (Faixa): ' + (findValue(data, ['estimativa_faturamento_anual', 'faturamento_anual']) || 'N/A'));
+            lines.push('Faturamento (Estimativa): ' + (findValue(data, ['estimativa_final_faturamento', 'faturamento_estimado']) || 'N/A'));
+
+            lines.push('');
+            lines.push('=== CONTATO ===');
+            const tel = findValue(data, ['telefone', 'telefones', 'phone']);
+            lines.push('Telefone: ' + (Array.isArray(tel) ? tel.join(', ') : (tel || 'N/A')));
+            const email = findValue(data, ['email', 'e-mail', 'emails']);
+            lines.push('E-mail: ' + (Array.isArray(email) ? email.join(', ') : (email || 'N/A')));
+            lines.push('Site: ' + (findValue(data, ['site_oficial', 'site', 'website']) || 'N/A'));
+
+            lines.push('');
+            lines.push('=== PRESENÇA DIGITAL ===');
+            const nad = findValue(data, ['nivel_atividade_digital']);
+            if (typeof nad === 'object' && nad) {
+                lines.push('Score de Atividade: ' + (nad.score || 'N/A') + (nad.classificacao ? ' (' + nad.classificacao + ')' : ''));
+            } else {
+                lines.push('Score de Atividade: ' + (nad || 'N/A'));
+            }
+
+            const socialKeys = ['linkedin', 'instagram', 'facebook', 'youtube'];
+            for (const sk of socialKeys) {
+                let sData = findValue(data, [sk]);
+                if (typeof sData === 'object' && sData) {
+                    const handle = sData.perfil || sData.pagina || sData.canal || sData.handle || '';
+                    const url = sData.url || sData.link || '';
+                    const parts = [handle, url].filter(Boolean);
+                    lines.push(sk.charAt(0).toUpperCase() + sk.slice(1) + ': ' + (parts.join(' - ') || 'N/A'));
+                } else {
+                    lines.push(sk.charAt(0).toUpperCase() + sk.slice(1) + ': ' + (sData || 'N/A'));
+                }
+            }
+
+            lines.push('');
+            lines.push('=== REPUTAÇÃO ===');
+
+            const glassdoor = findValue(data, ['glassdoor']);
+            if (typeof glassdoor === 'object' && glassdoor) {
+                const nota = glassdoor.classificacao || glassdoor.nota || glassdoor.rating || '';
+                const aval = glassdoor.numero_avaliacoes || glassdoor.avaliacoes || '';
+                const parts = [nota, aval ? '(' + aval + ' avaliações)' : ''].filter(Boolean);
+                lines.push('Glassdoor: ' + (parts.join(' ') || 'N/A'));
+            } else {
+                lines.push('Glassdoor: ' + (glassdoor || 'N/A'));
+            }
+
+            const reclame = findValue(data, ['reclame_aqui', 'reclameAqui']);
+            if (typeof reclame === 'object' && reclame) {
+                const parts = [(reclame.status || reclame.reputacao || ''), reclame.nota ? 'Nota ' + reclame.nota : ''].filter(Boolean);
+                lines.push('Reclame Aqui: ' + (parts.join(' - ') || 'N/A'));
+            } else {
+                lines.push('Reclame Aqui: ' + (reclame || 'N/A'));
+            }
+
+            const certsObj = findValue(data, ['certificacoes', 'certificações']);
+            if (typeof certsObj === 'object' && certsObj) {
+                lines.push('GPTW: ' + (certsObj.gptw || 'N/A'));
+                const outras = certsObj.outras || [];
+                lines.push('Outras Certificações: ' + (Array.isArray(outras) && outras.length ? outras.join(', ') : 'N/A'));
+            } else {
+                lines.push('GPTW: N/A');
+            }
+
+            lines.push('');
+            lines.push('=== META ===');
+            lines.push('Nível de Confiança: ' + (findValue(data, ['nivel_confianca_geral', 'nivel_confianca', 'confianca']) || 'N/A'));
+            const fontes = findValue(data, ['fontes_consultadas', 'fontes', 'sources']);
+            lines.push('Fontes: ' + (Array.isArray(fontes) ? fontes.join(', ') : (fontes || 'N/A')));
+            lines.push('Data da Pesquisa: ' + (findValue(data, ['data_pesquisa', 'data']) || 'N/A'));
+            const obs = findValue(data, ['observacoes', 'observações']);
+            if (obs) {
+                lines.push('Observações: ' + (Array.isArray(obs) ? obs.join('; ') : obs));
+            }
+
+            return lines.join('\n');
+        }
+
+        // ========== METHODOLOGY TOGGLE ==========
+        function toggleMethodology(el) {
+            el.classList.toggle('open');
+            const content = el.nextElementSibling;
+            content.classList.toggle('open');
+        }
+
+        // Formata o relatorio com syntax highlighting (fallback)
+        function formatReport(text) {
+            let html = text
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+
+            html = html.replace(/(https?:\/\/[^\s\)]+)/g, '<a href="$1" target="_blank" class="highlight-url">$1</a>');
+            html = html.replace(/(={10,})/g, '<span class="highlight-separator">$1</span>');
+            html = html.replace(/(-{10,})/g, '<span class="highlight-separator">$1</span>');
+            html = html.replace(/^(\d+\.\s+[A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ\s]+)$/gm, '<span class="highlight-section">$1</span>');
+            html = html.replace(/^(\d+\.\d+\s+[A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ\s]+)$/gm, '<span class="highlight-subsection">$1</span>');
+            html = html.replace(/(RELATÓRIO DE INTELIGÊNCIA E PROSPECÇÃO DE DADOS)/g, '<span class="highlight-title">$1</span>');
+            html = html.replace(/^([A-Za-záàâãéèêíïóôõöúçÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ\s]+:)(\s*)/gm, '<span class="highlight-label">$1</span>$2');
+
+            return html;
+        }
+
+        // Funcao para checar status da task
+        async function checkTaskStatus(taskId) {
+            const response = await fetch('/api/status?id=' + taskId);
+            return await response.json();
+        }
+
+        // ========== DISPLAY RESULTS ==========
+        function displayResults(rawResult) {
+            rawText = rawResult;
+            const resultsContainer = document.getElementById('resultsContainer');
+            const fallbackBox = document.getElementById('fallbackResultBox');
+            const copyBtn = document.getElementById('copyBtn');
+
+            // Try to parse JSON
+            parsedData = extractJSON(rawResult);
+
+            if (parsedData && typeof parsedData === 'object') {
+                // Structured display
+                resultsContainer.innerHTML = renderResults(parsedData);
+                plainTextForCopy = generatePlainText(parsedData);
+                resultsContainer.style.display = 'block';
+                fallbackBox.style.display = 'none';
+            } else {
+                // Fallback: raw text
+                fallbackBox.innerHTML = formatReport(rawResult);
+                plainTextForCopy = rawResult;
+                resultsContainer.style.display = 'none';
+                fallbackBox.style.display = 'block';
+            }
+
+            copyBtn.innerHTML = '&#x1F4CB; Copiar para PipeRun';
+            copyBtn.classList.remove('copied');
+        }
+
+        // Submit
+        document.getElementById('form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const cnpj = document.getElementById('cnpj').value.trim();
+            const nome = document.getElementById('nome').value.trim();
+
+            if (cnpj.replace(/\D/g, '').length !== 14) {
+                alert('CNPJ deve ter 14 dígitos');
+                return;
+            }
+
+            const btn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+            const statusText = document.getElementById('statusText');
+            const error = document.getElementById('error');
+            const resultSection = document.getElementById('resultSection');
+
+            btn.disabled = true;
+            loading.style.display = 'block';
+            error.style.display = 'none';
+            resultSection.classList.remove('active');
+            statusText.textContent = 'Iniciando análise...';
+
+            try {
+                // Criar task
+                const createResponse = await fetch('/api/enriquecer', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ cnpj, nome })
+                });
+
+                const createData = await createResponse.json();
+
+                if (!createResponse.ok) {
+                    throw new Error(createData.error || 'Erro ao iniciar análise');
+                }
+
+                const taskId = createData.taskId;
+
+                // Polling para checar status
+                let attempts = 0;
+                const maxAttempts = 180; // 15 minutos
+
+                const messages = [
+                    'Consultando bases oficiais...',
+                    'Buscando dados cadastrais...',
+                    'Analisando Receita Federal...',
+                    'Verificando situação cadastral...',
+                    'Coletando dados econômicos...',
+                    'Pesquisando redes sociais...',
+                    'Analisando presença digital...',
+                    'Buscando informações de contato...',
+                    'Identificando quadro societário...',
+                    'Analisando segmento de atuação...',
+                    'Calculando estimativas...',
+                    'Gerando análise SWOT...',
+                    'Compilando relatório...',
+                    'Finalizando análise...'
+                ];
+
+                while (attempts < maxAttempts) {
+                    await new Promise(r => setTimeout(r, 5000));
+                    attempts++;
+
+                    const msgIndex = Math.min(Math.floor(attempts / 4), messages.length - 1);
+                    statusText.textContent = messages[msgIndex] + ' (' + (attempts * 5) + 's)';
+
+                    try {
+                        const statusData = await checkTaskStatus(taskId);
+
+                        if (statusData.status === 'completed') {
+                            displayResults(statusData.resultado);
+                            resultSection.classList.add('active');
+                            loading.style.display = 'none';
+                            btn.disabled = false;
+
+                            resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            return;
+                        }
+
+                        if (statusData.status === 'failed') {
+                            throw new Error(statusData.error || 'Falha na análise');
+                        }
+                    } catch (pollError) {
+                        if (pollError.message && (pollError.message.includes('Falha') || pollError.message.includes('failed'))) {
+                            throw pollError;
+                        }
+                        console.log('Tentando novamente...', pollError);
+                    }
+                }
+
+                throw new Error('Timeout: a análise demorou demais');
+
+            } catch (err) {
+                error.textContent = err.message;
+                error.style.display = 'flex';
+            } finally {
+                btn.disabled = false;
+                loading.style.display = 'none';
+            }
+        });
+
+        // Copiar resultado
+        function copiarResultado() {
+            navigator.clipboard.writeText(plainTextForCopy).then(function() {
+                var btn = document.getElementById('copyBtn');
+                btn.innerHTML = '&#x2705; Copiado!';
+                btn.classList.add('copied');
+                setTimeout(function() {
+                    btn.innerHTML = '&#x1F4CB; Copiar para PipeRun';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

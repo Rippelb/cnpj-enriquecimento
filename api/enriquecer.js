@@ -159,7 +159,19 @@ Com base nos funcionários estimados e no setor:
 - Média empresa: > R$ 4,8 milhões e ≤ R$ 300 milhões/ano
 - Grande empresa: > R$ 300 milhões/ano
 
-### 6. SCORE DE ATIVIDADE DIGITAL (1-5)
+### 6. RESUMO PARA CRM (TEXTO CORRIDO)
+Gere um parágrafo corrido de 4 a 6 linhas, em linguagem profissional e direta, que o closer possa colar no CRM. O texto deve conter:
+- Nome fantasia (ou razão social se não houver fantasia)
+- Segmento e nicho de atuação
+- Porte da empresa (classificação BNDES)
+- Estimativa de funcionários e faturamento
+- Presença digital resumida (se tem site, LinkedIn ativo, redes sociais)
+- Reputação (Glassdoor e/ou Reclame Aqui, se disponíveis)
+- Qualquer dado relevante que ajude o closer a abordar a empresa
+
+NÃO use bullet points, listas ou quebras de linha. Escreva tudo como um TEXTO CORRIDO em um único parágrafo. Seja objetivo mas completo.
+
+### 7. SCORE DE ATIVIDADE DIGITAL (1-5)
 - 5/5: Posts diários, site moderno, 3+ redes ativas, 10k+ seguidores
 - 4/5: Posts semanais, site funcional, 2-3 redes, 5k-10k seguidores
 - 3/5: Posts mensais, site básico, 1-2 redes, 1k-5k seguidores
@@ -244,6 +256,7 @@ ${dadosReais ? 'Os campos de dados cadastrais JÁ ESTÃO preenchidos com dados r
     "mediana_calculada": "CALCULAR",
     "range_final": "CALCULAR"
   },
+  "resumo_para_crm": "GERAR texto corrido de 4-6 linhas com as informações mais relevantes para o closer colar no CRM",
   "metodologia_faturamento": "DESCREVER cálculo usado",
   "nivel_confianca_geral": "Alta / Média / Baixa",
   "fontes_consultadas": [],

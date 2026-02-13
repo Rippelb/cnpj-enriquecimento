@@ -498,6 +498,56 @@
         .highlight-separator { color: #333; }
         .highlight-url { color: #4da6ff; text-decoration: underline; cursor: pointer; }
 
+        /* CRM Summary Card */
+        .crm-summary-card {
+            background: linear-gradient(135deg, #1a2744 0%, #0d1b2a 100%);
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        .crm-summary-card .result-card-header {
+            background: linear-gradient(135deg, #2a1f00 0%, #1a1500 100%);
+            border-bottom: 1px solid #ffd700;
+        }
+        .crm-summary-text {
+            padding: 20px;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .crm-copy-area {
+            padding: 0 20px 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .btn-crm-copy {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
+            color: #1a1a2e;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-crm-copy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+        }
+        .btn-crm-copy.copied {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            color: white;
+        }
+
         /* Responsive */
         @media (max-width: 640px) {
             .field-grid {
@@ -560,6 +610,7 @@
     <script>
         let rawText = '';
         let plainTextForCopy = '';
+        let crmResumoText = '';
         let parsedData = null;
 
         // Mascara CNPJ
@@ -655,6 +706,18 @@
         // directly from `data.*` with fallback lookups for alternate key names.
         function renderResults(data) {
             let html = '';
+
+            // --- 0. Resumo para CRM (texto corrido) ---
+            const resumoCrm = findValue(data, ['resumo_para_crm', 'resumo_crm', 'resumo']);
+            if (resumoCrm && String(resumoCrm) !== 'N/A' && String(resumoCrm) !== 'Não encontrado') {
+                html += '<div class="crm-summary-card">';
+                html += '<div class="result-card-header"><span class="card-icon">&#x1F4DD;</span><span class="card-title">Resumo para o CRM</span></div>';
+                html += '<div class="crm-summary-text">' + esc(String(resumoCrm)) + '</div>';
+                html += '<div class="crm-copy-area">';
+                html += '<button class="btn-crm-copy" id="btnCrmCopy" onclick="copiarResumoCrm()">&#x1F4CB; Copiar Resumo para o CRM</button>';
+                html += '</div>';
+                html += '</div>';
+            }
 
             // --- 1. Dados Cadastrais ---
             html += '<div class="result-card">';
@@ -911,6 +974,13 @@
         function generatePlainText(data) {
             let lines = [];
 
+            const resumoCrm = findValue(data, ['resumo_para_crm', 'resumo_crm', 'resumo']);
+            if (resumoCrm && String(resumoCrm) !== 'N/A' && String(resumoCrm) !== 'Não encontrado') {
+                lines.push('=== RESUMO PARA O CRM ===');
+                lines.push(String(resumoCrm));
+                lines.push('');
+            }
+
             lines.push('=== DADOS CADASTRAIS ===');
             lines.push('Razão Social: ' + (findValue(data, ['razao_social', 'razaoSocial']) || 'N/A'));
             lines.push('Nome Fantasia: ' + (findValue(data, ['nome_fantasia', 'nomeFantasia']) || 'N/A'));
@@ -1069,6 +1139,7 @@
                 // Structured display
                 resultsContainer.innerHTML = renderResults(parsedData);
                 plainTextForCopy = generatePlainText(parsedData);
+                crmResumoText = String(findValue(parsedData, ['resumo_para_crm', 'resumo_crm', 'resumo']) || '');
                 resultsContainer.style.display = 'block';
                 fallbackBox.style.display = 'none';
             } else {
@@ -1185,6 +1256,19 @@
                 loading.style.display = 'none';
             }
         });
+
+        // Copiar resumo CRM
+        function copiarResumoCrm() {
+            navigator.clipboard.writeText(crmResumoText).then(function() {
+                var btn = document.getElementById('btnCrmCopy');
+                btn.innerHTML = '&#x2705; Copiado!';
+                btn.classList.add('copied');
+                setTimeout(function() {
+                    btn.innerHTML = '&#x1F4CB; Copiar Resumo para o CRM';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
 
         // Copiar resultado
         function copiarResultado() {

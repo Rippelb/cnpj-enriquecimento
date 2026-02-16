@@ -193,7 +193,16 @@ Gere um parágrafo corrido de 4 a 6 linhas, em linguagem profissional e direta, 
 
 NÃO use bullet points, listas ou quebras de linha. Escreva tudo como um TEXTO CORRIDO em um único parágrafo. Seja objetivo mas completo.
 
-### 9. RELATÓRIO PARA O VENDEDOR
+### 9. INSIGHTS PARA ABORDAGEM
+Gere de 3 a 5 insights curtos e inteligentes para ajudar o vendedor na abordagem. Cada insight deve ser uma frase que conecte um dado da empresa com uma vantagem comercial. Exemplos:
+- Se empresa tem +10 anos: "Empresa consolidada = valoriza qualidade e parceria de longo prazo"
+- Se score digital >= 4: "Alta atividade digital = pesquisa fornecedores online"
+- Se Glassdoor >= 4.0: "Boa reputação interna = cultura de qualidade"
+- Se faturamento alto: "Capacidade de investimento em novos fornecedores"
+- Se LinkedIn forte: "Decisores provavelmente ativos no LinkedIn"
+Retorne como array de strings.
+
+### 10. RELATÓRIO PARA O VENDEDOR
 Gere um texto corrido de 5 a 8 linhas, focado em AJUDAR O VENDEDOR DA MAVE na abordagem e negociação. O texto deve:
 - Dizer se a empresa se encaixa no ICP e por quê
 - Indicar que tipos de produtos Mave seriam mais úteis para essa empresa (cintas, catracas, toldos, redes, etc.)
@@ -301,6 +310,7 @@ ${dadosReais ? 'Os campos de dados cadastrais JÁ ESTÃO preenchidos com dados r
   },
   "resumo_para_crm": "GERAR texto corrido de 4-6 linhas com as informações mais relevantes para o closer colar no CRM",
   "relatorio_vendedor": "GERAR texto corrido de 5-8 linhas com inteligência comercial para o vendedor Mave abordar esta empresa",
+  "insights_abordagem": ["GERAR 3-5 insights curtos para abordagem comercial"],
   "metodologia_faturamento": "DESCREVER cálculo usado",
   "nivel_confianca_geral": "Alta / Média / Baixa",
   "fontes_consultadas": [],

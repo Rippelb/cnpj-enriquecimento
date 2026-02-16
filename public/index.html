@@ -12,24 +12,12 @@
             min-height: 100vh;
             padding: 30px 20px;
         }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        h1 {
-            color: #00d4ff;
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-        .subtitle {
-            color: #888;
-            font-size: 14px;
-        }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 30px; }
+        h1 { color: #00d4ff; font-size: 28px; font-weight: 600; margin-bottom: 8px; }
+        .subtitle { color: #888; font-size: 14px; }
+
+        /* Form card */
         .card {
             background: #16213e;
             border-radius: 12px;
@@ -37,604 +25,226 @@
             margin-bottom: 20px;
             border: 1px solid #0f3460;
         }
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 20px; }
         label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #00d4ff;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            display: block; margin-bottom: 8px; font-weight: 500;
+            color: #00d4ff; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;
         }
         input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid #0f3460;
-            border-radius: 8px;
-            font-size: 16px;
-            background: #1a1a2e;
-            color: #fff;
-            transition: all 0.2s;
+            width: 100%; padding: 14px 16px; border: 2px solid #0f3460;
+            border-radius: 8px; font-size: 16px; background: #1a1a2e; color: #fff; transition: all 0.2s;
         }
-        input::placeholder {
-            color: #555;
-        }
-        input:focus {
-            outline: none;
-            border-color: #00d4ff;
-            box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
-        }
+        input::placeholder { color: #555; }
+        input:focus { outline: none; border-color: #00d4ff; box-shadow: 0 0 0 3px rgba(0,212,255,0.1); }
         .btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
+            width: 100%; padding: 16px; border: none; border-radius: 8px;
+            font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-primary { background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%); color: #1a1a2e; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 25px rgba(0,212,255,0.3); }
+        .btn-primary:disabled { background: #333; color: #666; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .loading { text-align: center; padding: 50px; }
+        .loading-spinner {
+            width: 50px; height: 50px; border: 3px solid #0f3460; border-top-color: #00d4ff;
+            border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 25px;
+        }
+        .loading p { font-size: 16px; color: #00d4ff; margin-bottom: 8px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .error {
+            background: rgba(220,53,69,0.1); border: 1px solid #dc3545; color: #ff6b6b;
+            padding: 15px 20px; border-radius: 8px; margin-top: 20px; display: flex; align-items: center; gap: 10px;
+        }
+        .error::before { content: "\26A0"; font-size: 18px; }
+        .status-text { font-size: 13px; color: #666; }
+        .result-section { display: none; }
+        .result-section.active { display: block; }
+
+        /* ========== DOCUMENT STYLES ========== */
+        .doc {
+            background: #fff;
             border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            padding: 50px 45px;
+            color: #222;
+            font-family: Calibri, 'Segoe UI', Arial, sans-serif;
+            font-size: 11pt;
+            line-height: 1.5;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.4);
         }
-        .btn-primary {
-            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
-            color: #1a1a2e;
+        .doc-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #003366;
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 25px rgba(0,212,255,0.3);
-        }
-        .btn-primary:disabled {
-            background: #333;
+        .doc-header h2 {
+            font-size: 12pt;
             color: #666;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        .btn-copy {
-            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
-            color: white;
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .btn-copy:hover {
-            background: linear-gradient(135deg, #2dbe4e 0%, #28a745 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(40,167,69,0.3);
-        }
-        .btn-copy.copied {
-            background: #6c757d;
-        }
-        .result-section {
-            display: none;
-        }
-        .result-section.active {
-            display: block;
-        }
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #0f3460;
-        }
-        .result-header h2 {
-            font-size: 18px;
-            color: #00d4ff;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .result-header h2::before {
-            content: "\2713";
-            background: #28a745;
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-        }
-
-        /* ========== RESULT CARDS ========== */
-        .result-card {
-            background: #0d1b2a;
-            border: 1px solid #1b3a4b;
-            border-radius: 12px;
-            margin-bottom: 16px;
-            overflow: hidden;
-        }
-        .result-card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 16px 20px;
-            background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
-            border-bottom: 1px solid #1b3a4b;
-        }
-        .result-card-header .card-icon {
-            font-size: 20px;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 215, 0, 0.1);
-            border-radius: 8px;
-        }
-        .result-card-header .card-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: #ffd700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+            font-weight: 400;
         }
-        .result-card-body {
-            padding: 20px;
+        .doc-header h1 {
+            font-size: 22pt;
+            color: #003366;
+            font-weight: 700;
+            margin-bottom: 0;
         }
-
-        /* Field grid — 2 columns */
-        .field-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
+        .doc-section {
+            margin-bottom: 24px;
         }
-        .field-item {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
+        .doc-section-title {
+            font-size: 13pt;
+            font-weight: 700;
+            color: #003366;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #ddd;
         }
-        .field-item.full-width {
-            grid-column: 1 / -1;
-        }
-        .field-label {
-            font-size: 11px;
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 500;
-        }
-        .field-value {
-            font-size: 14px;
-            color: #fff;
-            word-break: break-word;
-        }
-        .field-value a {
-            color: #4da6ff;
-            text-decoration: none;
-        }
-        .field-value a:hover {
-            text-decoration: underline;
-        }
-        .field-value.empty {
-            color: #555;
-            font-style: italic;
-        }
-
-        /* Social grid — mini cards */
-        .social-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        .social-card {
-            background: #16213e;
-            border: 1px solid #0f3460;
-            border-radius: 8px;
-            padding: 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .social-card .social-name {
-            font-size: 12px;
-            color: #888;
-            text-transform: uppercase;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .social-card .social-handle {
-            font-size: 13px;
-            color: #fff;
-            word-break: break-all;
-        }
-        .social-card .social-handle a {
-            color: #4da6ff;
-            text-decoration: none;
-        }
-        .social-card .social-handle a:hover {
-            text-decoration: underline;
-        }
-        .social-card .social-followers {
-            font-size: 11px;
-            color: #aaa;
-        }
-
-        /* Activity score bar */
-        .score-bar-container {
-            margin-bottom: 20px;
-        }
-        .score-bar-label {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .doc-table {
+            width: 100%;
+            border-collapse: collapse;
             margin-bottom: 8px;
         }
-        .score-bar-label span:first-child {
-            font-size: 12px;
-            color: #888;
-            text-transform: uppercase;
-            font-weight: 500;
+        .doc-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
         }
-        .score-bar-label .score-value {
-            font-size: 16px;
-            font-weight: bold;
-            color: #ffd700;
-        }
-        .score-bar {
-            height: 10px;
-            background: #16213e;
-            border-radius: 5px;
-            overflow: hidden;
-            position: relative;
-        }
-        .score-bar-fill {
-            height: 100%;
-            border-radius: 5px;
-            transition: width 0.8s ease;
-        }
-        .score-bar-fill.score-low { background: linear-gradient(90deg, #dc3545, #e74c3c); }
-        .score-bar-fill.score-mid { background: linear-gradient(90deg, #ffc107, #f0ad4e); }
-        .score-bar-fill.score-high { background: linear-gradient(90deg, #28a745, #20c997); }
-
-        /* Confidence badge */
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+        .doc-table td:first-child {
+            width: 200px;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            color: #555;
+            font-size: 10pt;
         }
-        .badge-green {
-            background: rgba(40, 167, 69, 0.2);
-            color: #51cf66;
-            border: 1px solid rgba(40, 167, 69, 0.3);
+        .doc-table td:last-child {
+            color: #222;
         }
-        .badge-yellow {
-            background: rgba(255, 193, 7, 0.2);
-            color: #ffd43b;
-            border: 1px solid rgba(255, 193, 7, 0.3);
+        .doc-table tr:last-child td {
+            border-bottom: none;
         }
-        .badge-red {
-            background: rgba(220, 53, 69, 0.2);
-            color: #ff6b6b;
-            border: 1px solid rgba(220, 53, 69, 0.3);
+        .doc-table a {
+            color: #0066cc;
+            text-decoration: none;
         }
-
-        /* Methodology collapsible */
-        .methodology-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            padding: 12px 16px;
-            background: #16213e;
-            border-radius: 8px;
-            border: 1px solid #0f3460;
-            transition: background 0.2s;
-            user-select: none;
+        .doc-table a:hover {
+            text-decoration: underline;
         }
-        .methodology-toggle:hover {
-            background: #1a2744;
+        .doc-bold {
+            font-weight: 700;
+            color: #003366;
         }
-        .methodology-toggle span {
-            font-size: 13px;
-            color: #aaa;
-        }
-        .methodology-toggle .toggle-arrow {
-            color: #888;
-            font-size: 12px;
-            transition: transform 0.3s;
-        }
-        .methodology-toggle.open .toggle-arrow {
-            transform: rotate(180deg);
-        }
-        .methodology-content {
-            display: none;
-            padding: 16px;
-            font-size: 13px;
-            color: #aaa;
+        .doc-text {
+            font-size: 11pt;
             line-height: 1.7;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            border: 1px solid #0f3460;
-            border-top: none;
-            border-radius: 0 0 8px 8px;
-            background: #0a1628;
+            color: #333;
+            margin-bottom: 8px;
         }
-        .methodology-content.open {
-            display: block;
+        .doc-checklist {
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
-
-        /* Fallback raw result box */
-        .result-box {
-            background: #0d1b2a;
-            border: 1px solid #1b3a4b;
-            border-radius: 8px;
-            padding: 25px;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 13px;
-            line-height: 1.7;
-            max-height: 700px;
-            overflow-y: auto;
-            color: #e0e0e0;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        .result-box .report-title {
-            color: #00d4ff;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        .result-box .section-header {
-            color: #ffd700;
-            font-weight: bold;
-            margin-top: 15px;
-        }
-        .result-box .subsection {
-            color: #00d4ff;
-        }
-        .result-box .label {
-            color: #888;
-        }
-        .result-box .value {
-            color: #fff;
-        }
-        .result-box .separator {
+        .doc-checklist li {
+            padding: 5px 0;
+            font-size: 11pt;
             color: #333;
         }
-
-        .loading {
-            text-align: center;
-            padding: 50px;
+        .doc-checklist li.checked {
+            color: #006600;
+            font-weight: 600;
         }
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid #0f3460;
-            border-top-color: #00d4ff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 25px;
+        .doc-insights {
+            list-style: disc;
+            padding-left: 24px;
+            margin: 0;
         }
-        .loading p {
-            font-size: 16px;
-            color: #00d4ff;
-            margin-bottom: 8px;
+        .doc-insights li {
+            padding: 4px 0;
+            font-size: 11pt;
+            color: #333;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .doc-next-steps {
+            list-style: none;
+            padding: 0;
         }
-        .error {
-            background: rgba(220, 53, 69, 0.1);
-            border: 1px solid #dc3545;
-            color: #ff6b6b;
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .doc-next-steps li {
+            padding: 6px 0;
+            font-size: 11pt;
+            color: #555;
         }
-        .error::before {
-            content: "\26A0";
-            font-size: 18px;
-        }
-        .status-text {
-            font-size: 13px;
-            color: #666;
-        }
-        .stats {
-            display: flex;
-            gap: 20px;
-            margin-top: 15px;
+        .doc-footer {
+            margin-top: 30px;
             padding-top: 15px;
-            border-top: 1px solid #0f3460;
-        }
-        .stat {
-            flex: 1;
+            border-top: 1px solid #ddd;
+            font-size: 9pt;
+            color: #999;
             text-align: center;
-            padding: 15px;
-            background: #1a1a2e;
-            border-radius: 8px;
-        }
-        .stat-value {
-            font-size: 24px;
-            font-weight: bold;
-            color: #00d4ff;
-        }
-        .stat-label {
-            font-size: 11px;
-            color: #666;
-            text-transform: uppercase;
-            margin-top: 5px;
         }
 
-        /* Scrollbar estilizada */
-        .result-box::-webkit-scrollbar {
-            width: 8px;
-        }
-        .result-box::-webkit-scrollbar-track {
-            background: #0d1b2a;
-            border-radius: 4px;
-        }
-        .result-box::-webkit-scrollbar-thumb {
-            background: #1b3a4b;
-            border-radius: 4px;
-        }
-        .result-box::-webkit-scrollbar-thumb:hover {
-            background: #2a5a6b;
-        }
-
-        /* Highlight de sintaxe para o relatorio */
-        .highlight-title { color: #00d4ff; font-weight: bold; }
-        .highlight-section { color: #ffd700; }
-        .highlight-subsection { color: #00d4ff; }
-        .highlight-label { color: #888; }
-        .highlight-value { color: #fff; }
-        .highlight-separator { color: #333; }
-        .highlight-url { color: #4da6ff; text-decoration: underline; cursor: pointer; }
-
-        /* CRM Summary Card */
-        .crm-summary-card {
-            background: linear-gradient(135deg, #1a2744 0%, #0d1b2a 100%);
-            border: 2px solid #ffd700;
-            border-radius: 12px;
-            margin-bottom: 16px;
-            overflow: hidden;
-        }
-        .crm-summary-card .result-card-header {
-            background: linear-gradient(135deg, #2a1f00 0%, #1a1500 100%);
-            border-bottom: 1px solid #ffd700;
-        }
-        .crm-summary-text {
-            padding: 20px;
-            font-size: 14px;
-            line-height: 1.8;
-            color: #e0e0e0;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        .crm-copy-area {
-            padding: 0 20px 20px;
+        /* Copy/action buttons below the doc */
+        .doc-actions {
             display: flex;
             gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
         }
-        .btn-crm-copy {
-            padding: 12px 24px;
+        .doc-actions .btn-action {
+            flex: 1;
+            min-width: 200px;
+            padding: 14px 20px;
             border: none;
             border-radius: 8px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-action:hover { transform: translateY(-2px); }
+        .btn-action.copied {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%) !important;
+            color: white !important;
+        }
+        .btn-crm {
             background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
             color: #1a1a2e;
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
         }
-        .btn-crm-copy:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
-        }
-        .btn-crm-copy.copied {
-            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
-            color: white;
-        }
-
-        /* ICP Fit Card */
-        .icp-fit-card {
-            background: linear-gradient(135deg, #1a2744 0%, #0d1b2a 100%);
-            border-radius: 12px;
-            margin-bottom: 16px;
-            overflow: hidden;
-        }
-        .icp-fit-card.fit-alto {
-            border: 2px solid #28a745;
-        }
-        .icp-fit-card.fit-alto .result-card-header {
-            background: linear-gradient(135deg, #0a2e14 0%, #0d1b2a 100%);
-            border-bottom: 1px solid #28a745;
-        }
-        .icp-fit-card.fit-medio {
-            border: 2px solid #ffc107;
-        }
-        .icp-fit-card.fit-medio .result-card-header {
-            background: linear-gradient(135deg, #2a2200 0%, #0d1b2a 100%);
-            border-bottom: 1px solid #ffc107;
-        }
-        .icp-fit-card.fit-baixo {
-            border: 2px solid #dc3545;
-        }
-        .icp-fit-card.fit-baixo .result-card-header {
-            background: linear-gradient(135deg, #2a0a0e 0%, #0d1b2a 100%);
-            border-bottom: 1px solid #dc3545;
-        }
-
-        /* Seller Report Card */
-        .seller-report-card {
-            background: linear-gradient(135deg, #1a2744 0%, #0d1b2a 100%);
-            border: 2px solid #00d4ff;
-            border-radius: 12px;
-            margin-bottom: 16px;
-            overflow: hidden;
-        }
-        .seller-report-card .result-card-header {
-            background: linear-gradient(135deg, #001a2e 0%, #0d1b2a 100%);
-            border-bottom: 1px solid #00d4ff;
-        }
-        .seller-report-text {
-            padding: 20px;
-            font-size: 14px;
-            line-height: 1.8;
-            color: #e0e0e0;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        .seller-copy-area {
-            padding: 0 20px 20px;
-            display: flex;
-            gap: 10px;
-        }
-        .btn-seller-copy {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
+        .btn-crm:hover { box-shadow: 0 5px 20px rgba(255,215,0,0.3); }
+        .btn-seller {
             background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
             color: #1a1a2e;
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
         }
-        .btn-seller-copy:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
-        }
-        .btn-seller-copy.copied {
+        .btn-seller:hover { box-shadow: 0 5px 20px rgba(0,212,255,0.3); }
+        .btn-full {
             background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
             color: white;
         }
+        .btn-full:hover { box-shadow: 0 5px 20px rgba(40,167,69,0.3); }
 
-        /* Responsive */
+        /* Fallback raw text */
+        .result-box {
+            background: #0d1b2a; border: 1px solid #1b3a4b; border-radius: 8px;
+            padding: 25px; font-family: Consolas, Monaco, monospace; font-size: 13px;
+            line-height: 1.7; max-height: 700px; overflow-y: auto; color: #e0e0e0;
+            white-space: pre-wrap; word-wrap: break-word;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .card, .header, .doc-actions, .result-box { display: none !important; }
+            .result-section { display: block !important; }
+            .doc { box-shadow: none; padding: 20px 0; }
+        }
         @media (max-width: 640px) {
-            .field-grid {
-                grid-template-columns: 1fr;
-            }
-            .social-grid {
-                grid-template-columns: 1fr;
-            }
+            .doc { padding: 25px 20px; }
+            .doc-table td:first-child { width: 130px; }
+            .doc-actions { flex-direction: column; }
         }
     </style>
 </head>
@@ -655,34 +265,19 @@
                     <label>Nome da Empresa (opcional)</label>
                     <input type="text" id="nome" placeholder="Ajuda a encontrar informações mais precisas">
                 </div>
-                <button type="submit" class="btn btn-primary" id="submitBtn">
-                    Gerar Relatório
-                </button>
+                <button type="submit" class="btn btn-primary" id="submitBtn">Gerar Relatório</button>
             </form>
-
             <div class="loading" id="loading" style="display: none;">
                 <div class="loading-spinner"></div>
                 <p>Gerando relatório de inteligência...</p>
                 <p class="status-text" id="statusText">Iniciando análise...</p>
             </div>
-
             <div class="error" id="error" style="display: none;"></div>
         </div>
 
-        <div class="card result-section" id="resultSection">
-            <div class="result-header">
-                <h2>Relatório Gerado</h2>
-            </div>
-
-            <!-- Structured results (when JSON parses) -->
+        <div class="result-section" id="resultSection">
             <div id="resultsContainer" style="display: none;"></div>
-
-            <!-- Fallback raw text (when JSON fails) -->
             <div class="result-box" id="fallbackResultBox" style="display: none;"></div>
-
-            <button class="btn btn-copy" id="copyBtn" onclick="copiarResultado()">
-                &#x1F4CB; Copiar para PipeRun
-            </button>
         </div>
     </div>
 
@@ -703,629 +298,361 @@
             e.target.value = v;
         });
 
-        // ========== EXTRACT JSON ==========
         function extractJSON(raw) {
             if (!raw || typeof raw !== 'string') return null;
-
-            // Strategy 1: markdown code fence ```json ... ```
             const fenceMatch = raw.match(/```json\s*([\s\S]*?)```/);
-            if (fenceMatch) {
-                try {
-                    return JSON.parse(fenceMatch[1].trim());
-                } catch (e) { /* continue */ }
-            }
-
-            // Strategy 2: direct parse
-            try {
-                return JSON.parse(raw.trim());
-            } catch (e) { /* continue */ }
-
-            // Strategy 3: find outermost { ... }
+            if (fenceMatch) { try { return JSON.parse(fenceMatch[1].trim()); } catch (e) {} }
+            try { return JSON.parse(raw.trim()); } catch (e) {}
             const firstBrace = raw.indexOf('{');
             const lastBrace = raw.lastIndexOf('}');
             if (firstBrace !== -1 && lastBrace > firstBrace) {
-                try {
-                    return JSON.parse(raw.substring(firstBrace, lastBrace + 1));
-                } catch (e) { /* continue */ }
+                try { return JSON.parse(raw.substring(firstBrace, lastBrace + 1)); } catch (e) {}
             }
-
             return null;
         }
 
-        // ========== HELPERS ==========
         function esc(str) {
             if (str === null || str === undefined) return '';
-            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
         }
-
-        function val(v) {
-            if (v === null || v === undefined || v === '' || v === 'N/A' || v === 'Não disponível' || v === 'Não encontrado') {
-                return '<span class="empty">Não disponível</span>';
-            }
-            return esc(String(v));
+        function v(val) {
+            if (val === null || val === undefined || val === '' || val === 'N/A' || val === 'Não disponível' || val === 'Não encontrado' || val === 'PESQUISAR' || val === 'CALCULAR') return 'N/A';
+            return String(val);
         }
-
-        function linkify(url, text) {
-            if (!url || url === 'N/A' || url === 'Não disponível' || url === 'Não encontrado') {
-                return '<span class="empty">Não disponível</span>';
-            }
-            const safeUrl = esc(url);
-            const safeText = esc(text || url);
-            return '<a href="' + safeUrl + '" target="_blank" rel="noopener">' + safeText + '</a>';
-        }
-
-        function fieldItem(label, value, fullWidth) {
-            const cls = fullWidth ? ' full-width' : '';
-            return '<div class="field-item' + cls + '">' +
-                '<div class="field-label">' + esc(label) + '</div>' +
-                '<div class="field-value">' + value + '</div>' +
-                '</div>';
-        }
-
         function getNestedValue(obj, path) {
             if (!obj) return undefined;
             const parts = path.split('.');
             let current = obj;
-            for (const part of parts) {
-                if (current === null || current === undefined) return undefined;
-                current = current[part];
-            }
+            for (const part of parts) { if (current === null || current === undefined) return undefined; current = current[part]; }
             return current;
         }
-
         function findValue(data, keys) {
-            for (const key of keys) {
-                const v = getNestedValue(data, key);
-                if (v !== undefined && v !== null && v !== '') return v;
-            }
+            for (const key of keys) { const val = getNestedValue(data, key); if (val !== undefined && val !== null && val !== '') return val; }
             return undefined;
         }
+        function tableRow(label, value, bold) {
+            const cls = bold ? ' class="doc-bold"' : '';
+            return '<tr><td>' + esc(label) + '</td><td' + cls + '>' + value + '</td></tr>';
+        }
+        function linkCell(url, text) {
+            if (!url || url === 'N/A' || url === 'Não encontrado' || url === 'PESQUISAR') return 'N/A';
+            return '<a href="' + esc(url) + '" target="_blank" rel="noopener">' + esc(text || url) + '</a>';
+        }
+        function calcYears(dateStr) {
+            if (!dateStr) return '';
+            const parts = dateStr.split(/[-\/]/);
+            let year;
+            if (parts[0].length === 4) year = parseInt(parts[0]);
+            else if (parts[2] && parts[2].length === 4) year = parseInt(parts[2]);
+            else return '';
+            const years = new Date().getFullYear() - year;
+            return years > 0 ? ' (+' + years + ' anos no mercado)' : '';
+        }
 
-        // ========== RENDER RESULTS ==========
-        // Manus returns a FLAT JSON (all fields at root level), so we read
-        // directly from `data.*` with fallback lookups for alternate key names.
+        // ========== RENDER FICHA COMERCIAL ==========
         function renderResults(data) {
-            let html = '';
+            const nomeFantasia = v(findValue(data, ['nome_fantasia','nomeFantasia']));
+            const razaoSocial = v(findValue(data, ['razao_social','razaoSocial']));
+            const titulo = nomeFantasia !== 'N/A' ? nomeFantasia : razaoSocial;
+            const dataFundacao = v(findValue(data, ['data_fundacao','dataFundacao','data_abertura']));
 
-            // --- 0. Resumo para CRM (texto corrido) ---
-            const resumoCrm = findValue(data, ['resumo_para_crm', 'resumo_crm', 'resumo']);
-            if (resumoCrm && String(resumoCrm) !== 'N/A' && String(resumoCrm) !== 'Não encontrado') {
-                html += '<div class="crm-summary-card">';
-                html += '<div class="result-card-header"><span class="card-icon">&#x1F4DD;</span><span class="card-title">Resumo para o CRM</span></div>';
-                html += '<div class="crm-summary-text">' + esc(String(resumoCrm)) + '</div>';
-                html += '<div class="crm-copy-area">';
-                html += '<button class="btn-crm-copy" id="btnCrmCopy" onclick="copiarResumoCrm()">&#x1F4CB; Copiar Resumo para o CRM</button>';
-                html += '</div>';
-                html += '</div>';
-            }
+            let html = '<div class="doc">';
 
-            // --- 1. Dados Cadastrais ---
-            html += '<div class="result-card">';
-            html += '<div class="result-card-header"><span class="card-icon">&#x1F3E2;</span><span class="card-title">Dados Cadastrais</span></div>';
-            html += '<div class="result-card-body"><div class="field-grid">';
-
-            html += fieldItem('Razão Social', val(findValue(data, ['razao_social', 'razaoSocial'])));
-            html += fieldItem('Nome Fantasia', val(findValue(data, ['nome_fantasia', 'nomeFantasia'])));
-            html += fieldItem('CNPJ', val(findValue(data, ['cnpj', 'CNPJ'])));
-            html += fieldItem('Data de Fundação', val(findValue(data, ['data_fundacao', 'dataFundacao', 'data_abertura'])));
-            html += fieldItem('Capital Social', val(findValue(data, ['capital_social', 'capitalSocial'])));
-            html += fieldItem('Situação Cadastral', val(findValue(data, ['situacao_cadastral', 'situacaoCadastral'])));
-
-            // CNAE can be object {codigo, descricao} or string
-            const cnaeRaw = findValue(data, ['cnae_principal', 'cnaePrincipal', 'cnae']);
-            let cnaeStr = '';
-            if (typeof cnaeRaw === 'object' && cnaeRaw) {
-                cnaeStr = [cnaeRaw.codigo, cnaeRaw.descricao].filter(Boolean).join(' - ');
-            } else {
-                cnaeStr = cnaeRaw;
-            }
-            html += fieldItem('CNAE Principal', val(cnaeStr), true);
-
-            html += fieldItem('Segmento', val(findValue(data, ['segmento_principal', 'segmento', 'setor'])));
-            html += fieldItem('Nicho', val(findValue(data, ['nicho_de_mercado', 'nicho', 'nicho_mercado'])));
-
-            const end = findValue(data, ['endereco', 'endereço']);
-            let endStr = '';
-            if (typeof end === 'object' && end) {
-                const parts = [end.logradouro, end.numero, end.complemento, end.bairro, end.cidade || end.municipio, end.uf || end.estado, end.cep].filter(Boolean);
-                endStr = parts.join(', ');
-            } else {
-                endStr = end;
-            }
-            html += fieldItem('Endereço', val(endStr), true);
-
-            html += '</div></div></div>';
-
-            // --- 2. Porte e Faturamento ---
-            html += '<div class="result-card">';
-            html += '<div class="result-card-header"><span class="card-icon">&#x1F4CA;</span><span class="card-title">Porte e Faturamento</span></div>';
-            html += '<div class="result-card-body"><div class="field-grid">';
-
-            html += fieldItem('Classificação BNDES', val(findValue(data, ['classificacao_porte_bndes', 'classificacao_bndes', 'porte_bndes'])));
-            html += fieldItem('Faixa de Receita', val(findValue(data, ['faixa_receita_bndes', 'faixa_faturamento', 'faixa'])));
-            html += fieldItem('Funcionários (Faixa)', val(findValue(data, ['faixa_estimada_funcionarios', 'faixa_funcionarios'])));
-            html += fieldItem('Funcionários (Estimativa)', val(findValue(data, ['estimativa_final_funcionarios', 'funcionarios', 'num_funcionarios'])));
-            html += fieldItem('Faturamento (Faixa)', val(findValue(data, ['estimativa_faturamento_anual', 'faturamento_anual'])), true);
-            html += fieldItem('Faturamento (Estimativa)', val(findValue(data, ['estimativa_final_faturamento', 'faturamento_estimado', 'faturamento'])), true);
-
-            html += '</div></div></div>';
-
-            // --- 3. Contato ---
-            html += '<div class="result-card">';
-            html += '<div class="result-card-header"><span class="card-icon">&#x1F4DE;</span><span class="card-title">Contato</span></div>';
-            html += '<div class="result-card-body"><div class="field-grid">';
-
-            const tel = findValue(data, ['telefone', 'telefones', 'phone']);
-            const telStr = Array.isArray(tel) ? tel.join(', ') : tel;
-            html += fieldItem('Telefone', val(telStr));
-
-            const email = findValue(data, ['email', 'e-mail', 'emails']);
-            const emailStr = Array.isArray(email) ? email.join(', ') : email;
-            html += fieldItem('E-mail', val(emailStr));
-
-            const site = findValue(data, ['site_oficial', 'site', 'website']);
-            html += fieldItem('Site', site ? linkify(site, site) : val(undefined), true);
-
-            html += '</div></div></div>';
-
-            // --- 4. Presença Digital ---
-            html += '<div class="result-card">';
-            html += '<div class="result-card-header"><span class="card-icon">&#x1F310;</span><span class="card-title">Presença Digital</span></div>';
-            html += '<div class="result-card-body">';
-
-            // Score bar — Manus returns nivel_atividade_digital: { score: "X/5", ... }
-            const nad = findValue(data, ['nivel_atividade_digital']);
-            let scoreRaw = '';
-            let scoreClassificacao = '';
-            if (typeof nad === 'object' && nad) {
-                scoreRaw = nad.score || '';
-                scoreClassificacao = nad.classificacao || '';
-            } else {
-                scoreRaw = nad || '';
-            }
-            // Parse "4/5" or "4.0/5" or just "4"
-            const scoreNum = parseFloat(String(scoreRaw).replace(/\/.*$/, '')) || 0;
-            const maxScore = 5;
-            const pct = Math.min((scoreNum / maxScore) * 100, 100);
-            const scoreClass = scoreNum <= 1.5 ? 'score-low' : (scoreNum <= 3.5 ? 'score-mid' : 'score-high');
-
-            html += '<div class="score-bar-container">';
-            html += '<div class="score-bar-label"><span>Score de Atividade Digital' + (scoreClassificacao ? ' (' + esc(scoreClassificacao) + ')' : '') + '</span><span class="score-value">' + esc(scoreNum.toFixed(1)) + ' / ' + maxScore + '</span></div>';
-            html += '<div class="score-bar"><div class="score-bar-fill ' + scoreClass + '" style="width:' + pct + '%"></div></div>';
+            // === HEADER ===
+            html += '<div class="doc-header">';
+            html += '<h2>Ficha Comercial</h2>';
+            html += '<h1>' + esc(titulo) + '</h1>';
             html += '</div>';
 
-            // Social mini cards — Manus puts these at root level
-            html += '<div class="social-grid">';
+            // === 1. DADOS DA EMPRESA ===
+            const cnaeRaw = findValue(data, ['cnae_principal','cnaePrincipal','cnae']);
+            let cnaeStr = 'N/A';
+            if (typeof cnaeRaw === 'object' && cnaeRaw) cnaeStr = [cnaeRaw.codigo, cnaeRaw.descricao].filter(Boolean).join(' - ') || 'N/A';
+            else if (cnaeRaw) cnaeStr = String(cnaeRaw);
 
-            const socials = [
-                { name: 'LinkedIn', icon: '&#x1F517;', keys: ['linkedin'] },
-                { name: 'Instagram', icon: '&#x1F4F7;', keys: ['instagram'] },
-                { name: 'Facebook', icon: '&#x1F465;', keys: ['facebook'] },
-                { name: 'YouTube', icon: '&#x1F3AC;', keys: ['youtube'] }
-            ];
+            html += '<div class="doc-section">';
+            html += '<div class="doc-section-title">&#x1F4CB; Dados da Empresa</div>';
+            html += '<table class="doc-table">';
+            html += tableRow('Razão Social', esc(razaoSocial));
+            html += tableRow('CNPJ', esc(v(findValue(data, ['cnpj','CNPJ']))));
+            html += tableRow('Fundação', esc(dataFundacao + calcYears(dataFundacao)));
+            html += tableRow('Porte', esc(v(findValue(data, ['classificacao_porte_bndes','classificacao_bndes']))), true);
+            html += tableRow('Funcionários', esc(v(findValue(data, ['estimativa_final_funcionarios','funcionarios']))) + ' colaboradores');
+            html += tableRow('Faturamento', esc(v(findValue(data, ['estimativa_final_faturamento','faturamento_estimado']))), true);
+            html += tableRow('Segmento', esc(v(findValue(data, ['nicho_de_mercado','nicho','nicho_mercado']))));
+            html += '</table></div>';
 
-            for (const s of socials) {
-                let sData = findValue(data, s.keys);
-                let url = '', handle = '', followers = '';
+            // === 2. CONTATO DIRETO ===
+            const tel = findValue(data, ['telefone','telefones']);
+            const telStr = Array.isArray(tel) ? tel.join(', ') : v(tel);
+            const email = findValue(data, ['email','e-mail']);
+            const emailStr = Array.isArray(email) ? email.join(', ') : v(email);
+            const site = findValue(data, ['site_oficial','site','website']);
+            const igData = findValue(data, ['instagram']);
+            let igStr = 'N/A';
+            if (typeof igData === 'object' && igData) igStr = igData.perfil || igData.url || 'N/A';
+            else if (igData) igStr = String(igData);
 
-                if (typeof sData === 'object' && sData) {
-                    url = sData.url || sData.link || '';
-                    handle = sData.perfil || sData.pagina || sData.canal || sData.handle || sData.usuario || '';
-                    followers = sData.seguidores || sData.followers || '';
-                } else if (typeof sData === 'string') {
-                    if (sData.startsWith('http')) {
-                        url = sData;
-                    } else {
-                        handle = sData;
-                    }
-                }
+            const end = findValue(data, ['endereco','endereço']);
+            let endStr = 'N/A';
+            if (typeof end === 'object' && end) endStr = [end.logradouro, end.numero, end.bairro, (end.cidade||end.municipio), end.uf, end.cep].filter(Boolean).join(', ') || 'N/A';
+            else if (end) endStr = String(end);
 
-                html += '<div class="social-card">';
-                html += '<div class="social-name">' + s.icon + ' ' + s.name + '</div>';
-                if (url) {
-                    html += '<div class="social-handle">' + linkify(url, handle || url) + '</div>';
-                } else if (handle) {
-                    html += '<div class="social-handle">' + esc(handle) + '</div>';
-                } else {
-                    html += '<div class="social-handle"><span class="empty">Não encontrado</span></div>';
-                }
-                if (followers) {
-                    html += '<div class="social-followers">' + esc(followers) + ' seguidores</div>';
-                }
-                html += '</div>';
-            }
-
-            html += '</div></div></div>';
-
-            // --- 5. Reputação ---
-            html += '<div class="result-card">';
-            html += '<div class="result-card-header"><span class="card-icon">&#x2B50;</span><span class="card-title">Reputação</span></div>';
-            html += '<div class="result-card-body"><div class="field-grid">';
-
-            // Glassdoor — Manus: { classificacao: "X.X/5.0", numero_avaliacoes: "X", url: "" }
-            const glassdoor = findValue(data, ['glassdoor']);
-            let glassdoorStr = '';
-            if (typeof glassdoor === 'object' && glassdoor) {
-                const nota = glassdoor.classificacao || glassdoor.nota || glassdoor.rating || '';
-                const aval = glassdoor.numero_avaliacoes || glassdoor.avaliacoes || '';
-                glassdoorStr = nota + (aval ? ' (' + aval + ' avaliações)' : '');
-            } else {
-                glassdoorStr = glassdoor;
-            }
-            html += fieldItem('Glassdoor', val(glassdoorStr));
-
-            // Reclame Aqui — Manus: { status: "Bom", nota: "7.5", url: "" }
-            const reclame = findValue(data, ['reclame_aqui', 'reclameAqui']);
-            let reclameStr = '';
-            if (typeof reclame === 'object' && reclame) {
-                reclameStr = (reclame.status || reclame.reputacao || '') + (reclame.nota ? ' - Nota ' + reclame.nota : '');
-            } else {
-                reclameStr = reclame;
-            }
-            html += fieldItem('Reclame Aqui', val(reclameStr));
-
-            // GPTW + certificações — Manus: certificacoes: { gptw: "Sim/Não", outras: [] }
-            const certsObj = findValue(data, ['certificacoes', 'certificações']);
-            let gptwStr = '';
-            let certStr = '';
-            if (typeof certsObj === 'object' && certsObj) {
-                gptwStr = certsObj.gptw || '';
-                const outras = certsObj.outras || [];
-                certStr = Array.isArray(outras) ? outras.join(', ') : outras;
-            }
-            html += fieldItem('GPTW', val(gptwStr));
-            html += fieldItem('Outras Certificações', val(certStr), true);
-
-            html += '</div></div></div>';
-
-            // --- 5b. Google Maps ---
             const gMaps = findValue(data, ['google_maps']);
-            if (typeof gMaps === 'object' && gMaps) {
-                html += '<div class="result-card">';
-                html += '<div class="result-card-header"><span class="card-icon">&#x1F4CD;</span><span class="card-title">Google Maps</span></div>';
-                html += '<div class="result-card-body"><div class="field-grid">';
-                const mapsLink = gMaps.link || gMaps.url || '';
-                html += fieldItem('Link no Maps', mapsLink ? linkify(mapsLink, 'Abrir no Google Maps') : val(undefined), true);
-                html += fieldItem('Produtos Expostos', val(gMaps.tem_produtos_expostos));
-                html += fieldItem('Observação do Local', val(gMaps.observacao_local || gMaps.observacao), true);
-                html += '</div></div></div>';
+            const mapsLink = (typeof gMaps === 'object' && gMaps) ? (gMaps.link || gMaps.url || '') : '';
+
+            html += '<div class="doc-section">';
+            html += '<div class="doc-section-title">&#x1F4DE; Contato Direto</div>';
+            html += '<table class="doc-table">';
+            html += tableRow('Telefone', '<strong>' + esc(telStr) + '</strong>');
+            html += tableRow('E-mail', '<strong>' + esc(emailStr) + '</strong>');
+            html += tableRow('Site', site ? linkCell(site, site) : 'N/A');
+            html += tableRow('Instagram', esc(igStr));
+            html += tableRow('Localização', mapsLink ? linkCell(mapsLink, endStr) : esc(endStr));
+            html += '</table></div>';
+
+            // === 3. INDICADORES DE QUALIFICAÇÃO ===
+            const nad = findValue(data, ['nivel_atividade_digital']);
+            let scoreStr = 'N/A';
+            if (typeof nad === 'object' && nad) scoreStr = (nad.score || '?') + ' - ' + (nad.classificacao || '');
+            else if (nad) scoreStr = String(nad);
+
+            const glassdoor = findValue(data, ['glassdoor']);
+            let glStr = 'Não avaliado';
+            if (typeof glassdoor === 'object' && glassdoor) {
+                const nota = glassdoor.classificacao || glassdoor.nota || '';
+                const aval = glassdoor.numero_avaliacoes || '';
+                if (nota) glStr = nota + (aval ? ' (' + aval + ' avaliações)' : '');
             }
 
-            // --- 5c. Análise ICP Mave ---
-            const icpData = findValue(data, ['analise_icp_mave', 'analise_icp']);
-            if (typeof icpData === 'object' && icpData) {
-                const perfil = String(icpData.perfil || '').toUpperCase();
-                const nivelFit = String(icpData.nivel_fit || icpData.fit || '').toLowerCase();
-                const fitClass = nivelFit.includes('alto') ? 'fit-alto' : (nivelFit.includes('edio') || nivelFit.includes('médio') ? 'fit-medio' : 'fit-baixo');
-
-                let perfilLabel = perfil;
-                if (perfil.includes('A')) perfilLabel = 'A - Revenda';
-                else if (perfil.includes('B')) perfilLabel = 'B - Transportadora';
-                else if (perfil.includes('C')) perfilLabel = 'C - Fora do ICP';
-
-                html += '<div class="icp-fit-card ' + fitClass + '">';
-                html += '<div class="result-card-header"><span class="card-icon">&#x1F3AF;</span><span class="card-title">Análise ICP Mave</span></div>';
-                html += '<div class="result-card-body"><div class="field-grid">';
-                html += fieldItem('Perfil', val(perfilLabel));
-
-                let fitBadge = '';
-                if (nivelFit.includes('alto')) fitBadge = '<span class="badge badge-green">' + esc(icpData.nivel_fit || icpData.fit) + '</span>';
-                else if (nivelFit.includes('edio') || nivelFit.includes('médio')) fitBadge = '<span class="badge badge-yellow">' + esc(icpData.nivel_fit || icpData.fit) + '</span>';
-                else fitBadge = '<span class="badge badge-red">' + esc(icpData.nivel_fit || icpData.fit || 'Baixo') + '</span>';
-                html += fieldItem('Nível de Fit', fitBadge);
-
-                html += fieldItem('Justificativa', val(icpData.justificativa), true);
-                html += '</div></div></div>';
+            const li = findValue(data, ['linkedin']);
+            let liStr = 'N/A';
+            if (typeof li === 'object' && li) {
+                const func = li.funcionarios_registrados || '?';
+                const seg = li.seguidores || '?';
+                liStr = func + ' funcionários / ' + seg + ' seguidores';
             }
 
-            // --- 5d. Relatório para o Vendedor ---
+            html += '<div class="doc-section">';
+            html += '<div class="doc-section-title">&#x1F3AF; Indicadores de Qualificação</div>';
+            html += '<table class="doc-table">';
+            html += tableRow('Atividade Digital', '<strong>' + esc(scoreStr) + '</strong>');
+            html += tableRow('Glassdoor', esc(glStr));
+            html += tableRow('LinkedIn', esc(liStr));
+            html += '</table></div>';
+
+            // === 4. ANÁLISE DE FIT COM ICP ===
+            const icpData = findValue(data, ['analise_icp_mave','analise_icp']);
+            const nicho = v(findValue(data, ['nicho_de_mercado','nicho'])).toLowerCase();
+            const cnaeDesc = (typeof cnaeRaw === 'object' && cnaeRaw) ? (cnaeRaw.descricao || '').toLowerCase() : String(cnaeRaw || '').toLowerCase();
+            const perfilStr = (typeof icpData === 'object' && icpData) ? String(icpData.perfil || '').toUpperCase() : '';
+            const fitStr = (typeof icpData === 'object' && icpData) ? String(icpData.nivel_fit || icpData.fit || '') : '';
+            const justificativa = (typeof icpData === 'object' && icpData) ? (icpData.justificativa || '') : '';
+            const temProdutos = (typeof gMaps === 'object' && gMaps) ? String(gMaps.tem_produtos_expostos || '').toLowerCase() : '';
+
+            const isRevenda = perfilStr.includes('A') || cnaeDesc.includes('comércio') || cnaeDesc.includes('comercio') || cnaeDesc.includes('varejo');
+            const isTransp = perfilStr.includes('B') || nicho.includes('transport') || cnaeDesc.includes('transport');
+            const temProdExpostos = temProdutos.includes('sim') || isRevenda;
+            const clientesMave = nicho.includes('transport') || nicho.includes('carga') || nicho.includes('construção') || nicho.includes('construcao') || nicho.includes('indust');
+            const usaCintas = isTransp;
+
+            function checkbox(checked, text) {
+                return '<li class="' + (checked ? 'checked' : '') + '">' + (checked ? '&#9745;' : '&#9744;') + ' ' + esc(text) + '</li>';
+            }
+
+            html += '<div class="doc-section">';
+            html += '<div class="doc-section-title">&#x2705; Análise de Fit com ICP</div>';
+            html += '<ul class="doc-checklist">';
+            html += checkbox(isRevenda, 'É REVENDA (Ferragens / Mat. Construção / Acess. Caminhão / Loja Agrícola)');
+            html += checkbox(temProdExpostos, 'Possui produtos expostos e equipe de vendas');
+            html += checkbox(clientesMave, 'Clientes usam material MAVE (Transportadoras / Indústrias / Construção)');
+            html += checkbox(isTransp, 'É TRANSPORTADORA com +10 caminhões');
+            html += checkbox(usaCintas, 'Usa cintas na amarração (Grade baixa/alta / Sider / Florestal)');
+            html += '</ul>';
+            if (fitStr || justificativa) {
+                html += '<p class="doc-text" style="margin-top:10px"><strong>Nível de Fit: ' + esc(fitStr) + '</strong>';
+                if (justificativa) html += ' — ' + esc(justificativa);
+                html += '</p>';
+            }
+            html += '</div>';
+
+            // === 5. INSIGHTS PARA ABORDAGEM ===
+            const insights = findValue(data, ['insights_abordagem']);
+            if (Array.isArray(insights) && insights.length > 0) {
+                html += '<div class="doc-section">';
+                html += '<div class="doc-section-title">&#x1F4A1; Insights para Abordagem</div>';
+                html += '<ul class="doc-insights">';
+                for (const insight of insights) html += '<li>' + esc(String(insight)) + '</li>';
+                html += '</ul></div>';
+            }
+
+            // === 6. RESUMO PARA CRM ===
+            const resumoCrm = findValue(data, ['resumo_para_crm','resumo_crm','resumo']);
+            if (resumoCrm && v(resumoCrm) !== 'N/A') {
+                html += '<div class="doc-section">';
+                html += '<div class="doc-section-title">&#x1F4DD; Resumo para o CRM</div>';
+                html += '<p class="doc-text">' + esc(String(resumoCrm)) + '</p>';
+                html += '</div>';
+            }
+
+            // === 7. RELATÓRIO PARA O VENDEDOR ===
             const relVendedor = findValue(data, ['relatorio_vendedor']);
-            if (relVendedor && String(relVendedor) !== 'N/A' && String(relVendedor) !== 'Não encontrado') {
-                html += '<div class="seller-report-card">';
-                html += '<div class="result-card-header"><span class="card-icon">&#x1F4BC;</span><span class="card-title">Relatório para o Vendedor</span></div>';
-                html += '<div class="seller-report-text">' + esc(String(relVendedor)) + '</div>';
-                html += '<div class="seller-copy-area">';
-                html += '<button class="btn-seller-copy" id="btnSellerCopy" onclick="copiarRelatorioVendedor()">&#x1F4CB; Copiar Relatório do Vendedor</button>';
-                html += '</div>';
+            if (relVendedor && v(relVendedor) !== 'N/A') {
+                html += '<div class="doc-section">';
+                html += '<div class="doc-section-title">&#x1F4BC; Relatório para o Vendedor</div>';
+                html += '<p class="doc-text">' + esc(String(relVendedor)) + '</p>';
                 html += '</div>';
             }
 
-            // --- 6. Metodologia (collapsible) ---
-            const calcFunc = findValue(data, ['calculo_detalhado_funcionarios']);
-            const metFat = findValue(data, ['metodologia_faturamento']);
-            if (calcFunc || metFat) {
-                let metParts = [];
-                if (calcFunc) {
-                    metParts.push('--- Cálculo de Funcionários ---');
-                    if (typeof calcFunc === 'object') {
-                        for (const [k, v] of Object.entries(calcFunc)) {
-                            metParts.push(k.replace(/_/g, ' ') + ': ' + v);
-                        }
-                    } else {
-                        metParts.push(String(calcFunc));
-                    }
-                }
-                if (metFat) {
-                    metParts.push('');
-                    metParts.push('--- Metodologia de Faturamento ---');
-                    metParts.push(typeof metFat === 'object' ? JSON.stringify(metFat, null, 2) : String(metFat));
-                }
-                const metText = metParts.join('\n');
+            // === 8. PRÓXIMOS PASSOS ===
+            html += '<div class="doc-section">';
+            html += '<div class="doc-section-title">&#x1F4DD; Próximos Passos</div>';
+            html += '<ul class="doc-next-steps">';
+            html += '<li>&#9744; Primeiro contato via: ______________________</li>';
+            html += '<li>&#9744; Data do contato: ____/____/____</li>';
+            html += '<li>&#9744; Decisor identificado: ______________________</li>';
+            html += '<li>&#9744; Interesse demonstrado: ______________________</li>';
+            html += '</ul></div>';
 
-                html += '<div class="result-card">';
-                html += '<div class="result-card-header"><span class="card-icon">&#x1F9EA;</span><span class="card-title">Metodologia</span></div>';
-                html += '<div class="result-card-body">';
-                html += '<div class="methodology-toggle" onclick="toggleMethodology(this)">';
-                html += '<span>Ver detalhes do cálculo e metodologia</span>';
-                html += '<span class="toggle-arrow">&#x25BC;</span>';
-                html += '</div>';
-                html += '<div class="methodology-content">' + esc(metText) + '</div>';
-                html += '</div></div>';
-            }
+            // === FOOTER ===
+            const dataPesquisa = v(findValue(data, ['data_pesquisa','data']));
+            const fontes = findValue(data, ['fontes_consultadas','fontes']);
+            const fontesStr = Array.isArray(fontes) ? fontes.join(', ') : v(fontes);
+            html += '<div class="doc-footer">';
+            html += 'Relatório gerado em: ' + esc(dataPesquisa) + ' | Fontes: ' + esc(fontesStr);
+            html += '</div>';
 
-            // --- 7. Informações da Pesquisa ---
-            html += '<div class="result-card">';
-            html += '<div class="result-card-header"><span class="card-icon">&#x2139;&#xFE0F;</span><span class="card-title">Informações da Pesquisa</span></div>';
-            html += '<div class="result-card-body"><div class="field-grid">';
+            html += '</div>'; // close .doc
 
-            const conf = findValue(data, ['nivel_confianca_geral', 'nivel_confianca', 'confianca']);
-            let confHtml = '';
-            if (conf) {
-                const confStr = String(conf).toLowerCase();
-                if (confStr.includes('alta') || confStr.includes('high')) {
-                    confHtml = '<span class="badge badge-green">' + esc(conf) + '</span>';
-                } else if (confStr.includes('media') || confStr.includes('média') || confStr.includes('medium')) {
-                    confHtml = '<span class="badge badge-yellow">' + esc(conf) + '</span>';
-                } else {
-                    confHtml = '<span class="badge badge-red">' + esc(conf) + '</span>';
-                }
-            } else {
-                confHtml = val(undefined);
-            }
-            html += fieldItem('Nível de Confiança', confHtml);
-
-            html += fieldItem('Data da Pesquisa', val(findValue(data, ['data_pesquisa', 'data'])));
-
-            const fontes = findValue(data, ['fontes_consultadas', 'fontes', 'sources']);
-            const fontesStr = Array.isArray(fontes) ? fontes.join(', ') : fontes;
-            html += fieldItem('Fontes Consultadas', val(fontesStr), true);
-
-            const obs = findValue(data, ['observacoes', 'observações']);
-            if (obs) {
-                const obsStr = Array.isArray(obs) ? obs.join('; ') : obs;
-                html += fieldItem('Observações', val(obsStr), true);
-            }
-
-            html += '</div></div></div>';
+            // === ACTION BUTTONS ===
+            html += '<div class="doc-actions">';
+            html += '<button class="btn-action btn-crm" id="btnCrmCopy" onclick="copiarResumoCrm()">&#x1F4CB; Copiar Resumo CRM</button>';
+            html += '<button class="btn-action btn-seller" id="btnSellerCopy" onclick="copiarRelatorioVendedor()">&#x1F4BC; Copiar Rel. Vendedor</button>';
+            html += '<button class="btn-action btn-full" id="copyBtn" onclick="copiarResultado()">&#x1F4CB; Copiar Tudo (PipeRun)</button>';
+            html += '</div>';
 
             return html;
         }
 
         // ========== GENERATE PLAIN TEXT ==========
-        // Reads from flat Manus JSON structure (all fields at root)
         function generatePlainText(data) {
             let lines = [];
+            const nomeFantasia = v(findValue(data, ['nome_fantasia','nomeFantasia']));
+            const razaoSocial = v(findValue(data, ['razao_social','razaoSocial']));
+            const titulo = nomeFantasia !== 'N/A' ? nomeFantasia : razaoSocial;
 
-            const resumoCrm = findValue(data, ['resumo_para_crm', 'resumo_crm', 'resumo']);
-            if (resumoCrm && String(resumoCrm) !== 'N/A' && String(resumoCrm) !== 'Não encontrado') {
+            lines.push('FICHA COMERCIAL — ' + titulo);
+            lines.push('');
+
+            const resumoCrm = findValue(data, ['resumo_para_crm','resumo_crm','resumo']);
+            if (resumoCrm && v(resumoCrm) !== 'N/A') {
                 lines.push('=== RESUMO PARA O CRM ===');
                 lines.push(String(resumoCrm));
                 lines.push('');
             }
 
-            lines.push('=== DADOS CADASTRAIS ===');
-            lines.push('Razão Social: ' + (findValue(data, ['razao_social', 'razaoSocial']) || 'N/A'));
-            lines.push('Nome Fantasia: ' + (findValue(data, ['nome_fantasia', 'nomeFantasia']) || 'N/A'));
-            lines.push('CNPJ: ' + (findValue(data, ['cnpj', 'CNPJ']) || 'N/A'));
-            lines.push('Data de Fundação: ' + (findValue(data, ['data_fundacao', 'dataFundacao', 'data_abertura']) || 'N/A'));
-            lines.push('Capital Social: ' + (findValue(data, ['capital_social', 'capitalSocial']) || 'N/A'));
-            lines.push('Situação Cadastral: ' + (findValue(data, ['situacao_cadastral', 'situacaoCadastral']) || 'N/A'));
-
-            const cnaeRaw = findValue(data, ['cnae_principal', 'cnaePrincipal', 'cnae']);
-            let cnaeStr = 'N/A';
-            if (typeof cnaeRaw === 'object' && cnaeRaw) {
-                cnaeStr = [cnaeRaw.codigo, cnaeRaw.descricao].filter(Boolean).join(' - ') || 'N/A';
-            } else if (cnaeRaw) {
-                cnaeStr = String(cnaeRaw);
-            }
-            lines.push('CNAE Principal: ' + cnaeStr);
-
-            lines.push('Segmento: ' + (findValue(data, ['segmento_principal', 'segmento', 'setor']) || 'N/A'));
-            lines.push('Nicho: ' + (findValue(data, ['nicho_de_mercado', 'nicho', 'nicho_mercado']) || 'N/A'));
-
-            const end = findValue(data, ['endereco', 'endereço']);
-            let endStr = 'N/A';
-            if (typeof end === 'object' && end) {
-                const parts = [end.logradouro, end.numero, end.complemento, end.bairro, end.cidade || end.municipio, end.uf || end.estado, end.cep].filter(Boolean);
-                endStr = parts.join(', ') || 'N/A';
-            } else if (end) {
-                endStr = String(end);
-            }
-            lines.push('Endereço: ' + endStr);
-
-            lines.push('');
-            lines.push('=== PORTE E FATURAMENTO ===');
-            lines.push('Classificação BNDES: ' + (findValue(data, ['classificacao_porte_bndes', 'classificacao_bndes']) || 'N/A'));
-            lines.push('Faixa de Receita: ' + (findValue(data, ['faixa_receita_bndes', 'faixa_faturamento']) || 'N/A'));
-            lines.push('Funcionários (Faixa): ' + (findValue(data, ['faixa_estimada_funcionarios', 'faixa_funcionarios']) || 'N/A'));
-            lines.push('Funcionários (Estimativa): ' + (findValue(data, ['estimativa_final_funcionarios', 'funcionarios']) || 'N/A'));
-            lines.push('Faturamento (Faixa): ' + (findValue(data, ['estimativa_faturamento_anual', 'faturamento_anual']) || 'N/A'));
-            lines.push('Faturamento (Estimativa): ' + (findValue(data, ['estimativa_final_faturamento', 'faturamento_estimado']) || 'N/A'));
+            lines.push('=== DADOS DA EMPRESA ===');
+            lines.push('Razão Social: ' + razaoSocial);
+            lines.push('CNPJ: ' + v(findValue(data, ['cnpj'])));
+            const df = v(findValue(data, ['data_fundacao','dataFundacao']));
+            lines.push('Fundação: ' + df);
+            lines.push('Porte: ' + v(findValue(data, ['classificacao_porte_bndes'])));
+            lines.push('Funcionários: ' + v(findValue(data, ['estimativa_final_funcionarios'])));
+            lines.push('Faturamento: ' + v(findValue(data, ['estimativa_final_faturamento'])));
+            lines.push('Segmento: ' + v(findValue(data, ['nicho_de_mercado'])));
 
             lines.push('');
             lines.push('=== CONTATO ===');
-            const tel = findValue(data, ['telefone', 'telefones', 'phone']);
-            lines.push('Telefone: ' + (Array.isArray(tel) ? tel.join(', ') : (tel || 'N/A')));
-            const email = findValue(data, ['email', 'e-mail', 'emails']);
-            lines.push('E-mail: ' + (Array.isArray(email) ? email.join(', ') : (email || 'N/A')));
-            lines.push('Site: ' + (findValue(data, ['site_oficial', 'site', 'website']) || 'N/A'));
+            const tel = findValue(data, ['telefone']);
+            lines.push('Telefone: ' + (Array.isArray(tel) ? tel.join(', ') : v(tel)));
+            const email = findValue(data, ['email']);
+            lines.push('E-mail: ' + (Array.isArray(email) ? email.join(', ') : v(email)));
+            lines.push('Site: ' + v(findValue(data, ['site_oficial'])));
+
+            const end = findValue(data, ['endereco']);
+            let endStr = 'N/A';
+            if (typeof end === 'object' && end) endStr = [end.logradouro, end.numero, end.bairro, (end.cidade||end.municipio), end.uf, end.cep].filter(Boolean).join(', ') || 'N/A';
+            else if (end) endStr = String(end);
+            lines.push('Endereço: ' + endStr);
 
             lines.push('');
-            lines.push('=== PRESENÇA DIGITAL ===');
+            lines.push('=== INDICADORES ===');
             const nad = findValue(data, ['nivel_atividade_digital']);
-            if (typeof nad === 'object' && nad) {
-                lines.push('Score de Atividade: ' + (nad.score || 'N/A') + (nad.classificacao ? ' (' + nad.classificacao + ')' : ''));
-            } else {
-                lines.push('Score de Atividade: ' + (nad || 'N/A'));
-            }
-
-            const socialKeys = ['linkedin', 'instagram', 'facebook', 'youtube'];
-            for (const sk of socialKeys) {
-                let sData = findValue(data, [sk]);
-                if (typeof sData === 'object' && sData) {
-                    const handle = sData.perfil || sData.pagina || sData.canal || sData.handle || '';
-                    const url = sData.url || sData.link || '';
-                    const parts = [handle, url].filter(Boolean);
-                    lines.push(sk.charAt(0).toUpperCase() + sk.slice(1) + ': ' + (parts.join(' - ') || 'N/A'));
-                } else {
-                    lines.push(sk.charAt(0).toUpperCase() + sk.slice(1) + ': ' + (sData || 'N/A'));
-                }
-            }
-
-            lines.push('');
-            lines.push('=== REPUTAÇÃO ===');
+            if (typeof nad === 'object' && nad) lines.push('Atividade Digital: ' + (nad.score||'N/A') + ' - ' + (nad.classificacao||''));
+            else lines.push('Atividade Digital: ' + v(nad));
 
             const glassdoor = findValue(data, ['glassdoor']);
             if (typeof glassdoor === 'object' && glassdoor) {
-                const nota = glassdoor.classificacao || glassdoor.nota || glassdoor.rating || '';
-                const aval = glassdoor.numero_avaliacoes || glassdoor.avaliacoes || '';
-                const parts = [nota, aval ? '(' + aval + ' avaliações)' : ''].filter(Boolean);
-                lines.push('Glassdoor: ' + (parts.join(' ') || 'N/A'));
-            } else {
-                lines.push('Glassdoor: ' + (glassdoor || 'N/A'));
-            }
+                const nota = glassdoor.classificacao || glassdoor.nota || '';
+                const aval = glassdoor.numero_avaliacoes || '';
+                lines.push('Glassdoor: ' + (nota || 'Não avaliado') + (aval ? ' (' + aval + ' avaliações)' : ''));
+            } else lines.push('Glassdoor: Não avaliado');
 
-            const reclame = findValue(data, ['reclame_aqui', 'reclameAqui']);
-            if (typeof reclame === 'object' && reclame) {
-                const parts = [(reclame.status || reclame.reputacao || ''), reclame.nota ? 'Nota ' + reclame.nota : ''].filter(Boolean);
-                lines.push('Reclame Aqui: ' + (parts.join(' - ') || 'N/A'));
-            } else {
-                lines.push('Reclame Aqui: ' + (reclame || 'N/A'));
-            }
+            const li = findValue(data, ['linkedin']);
+            if (typeof li === 'object' && li) lines.push('LinkedIn: ' + (li.funcionarios_registrados||'?') + ' func. / ' + (li.seguidores||'?') + ' seg.');
 
-            const certsObj = findValue(data, ['certificacoes', 'certificações']);
-            if (typeof certsObj === 'object' && certsObj) {
-                lines.push('GPTW: ' + (certsObj.gptw || 'N/A'));
-                const outras = certsObj.outras || [];
-                lines.push('Outras Certificações: ' + (Array.isArray(outras) && outras.length ? outras.join(', ') : 'N/A'));
-            } else {
-                lines.push('GPTW: N/A');
-            }
-
-            // Google Maps
-            const gMaps = findValue(data, ['google_maps']);
-            if (typeof gMaps === 'object' && gMaps) {
-                lines.push('');
-                lines.push('=== GOOGLE MAPS ===');
-                lines.push('Link: ' + (gMaps.link || gMaps.url || 'N/A'));
-                lines.push('Produtos Expostos: ' + (gMaps.tem_produtos_expostos || 'N/A'));
-                lines.push('Observação: ' + (gMaps.observacao_local || gMaps.observacao || 'N/A'));
-            }
-
-            // Análise ICP
-            const icpData = findValue(data, ['analise_icp_mave', 'analise_icp']);
+            const icpData = findValue(data, ['analise_icp_mave','analise_icp']);
             if (typeof icpData === 'object' && icpData) {
                 lines.push('');
-                lines.push('=== ANÁLISE ICP MAVE ===');
-                lines.push('Perfil: ' + (icpData.perfil || 'N/A'));
-                lines.push('Nível de Fit: ' + (icpData.nivel_fit || icpData.fit || 'N/A'));
-                lines.push('Justificativa: ' + (icpData.justificativa || 'N/A'));
+                lines.push('=== ANÁLISE ICP ===');
+                lines.push('Perfil: ' + v(icpData.perfil));
+                lines.push('Fit: ' + v(icpData.nivel_fit || icpData.fit));
+                lines.push('Justificativa: ' + v(icpData.justificativa));
             }
 
-            // Relatório do Vendedor
-            const relVendedor = findValue(data, ['relatorio_vendedor']);
-            if (relVendedor && String(relVendedor) !== 'N/A' && String(relVendedor) !== 'Não encontrado') {
+            const insights = findValue(data, ['insights_abordagem']);
+            if (Array.isArray(insights) && insights.length > 0) {
                 lines.push('');
-                lines.push('=== RELATÓRIO PARA O VENDEDOR ===');
-                lines.push(String(relVendedor));
+                lines.push('=== INSIGHTS ===');
+                for (const i of insights) lines.push('• ' + String(i));
             }
 
-            lines.push('');
-            lines.push('=== META ===');
-            lines.push('Nível de Confiança: ' + (findValue(data, ['nivel_confianca_geral', 'nivel_confianca', 'confianca']) || 'N/A'));
-            const fontes = findValue(data, ['fontes_consultadas', 'fontes', 'sources']);
-            lines.push('Fontes: ' + (Array.isArray(fontes) ? fontes.join(', ') : (fontes || 'N/A')));
-            lines.push('Data da Pesquisa: ' + (findValue(data, ['data_pesquisa', 'data']) || 'N/A'));
-            const obs = findValue(data, ['observacoes', 'observações']);
-            if (obs) {
-                lines.push('Observações: ' + (Array.isArray(obs) ? obs.join('; ') : obs));
+            const relVendedor = findValue(data, ['relatorio_vendedor']);
+            if (relVendedor && v(relVendedor) !== 'N/A') {
+                lines.push('');
+                lines.push('=== RELATÓRIO VENDEDOR ===');
+                lines.push(String(relVendedor));
             }
 
             return lines.join('\n');
         }
 
-        // ========== METHODOLOGY TOGGLE ==========
-        function toggleMethodology(el) {
-            el.classList.toggle('open');
-            const content = el.nextElementSibling;
-            content.classList.toggle('open');
-        }
-
-        // Formata o relatorio com syntax highlighting (fallback)
         function formatReport(text) {
-            let html = text
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;');
-
-            html = html.replace(/(https?:\/\/[^\s\)]+)/g, '<a href="$1" target="_blank" class="highlight-url">$1</a>');
-            html = html.replace(/(={10,})/g, '<span class="highlight-separator">$1</span>');
-            html = html.replace(/(-{10,})/g, '<span class="highlight-separator">$1</span>');
-            html = html.replace(/^(\d+\.\s+[A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ\s]+)$/gm, '<span class="highlight-section">$1</span>');
-            html = html.replace(/^(\d+\.\d+\s+[A-ZÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ\s]+)$/gm, '<span class="highlight-subsection">$1</span>');
-            html = html.replace(/(RELATÓRIO DE INTELIGÊNCIA E PROSPECÇÃO DE DADOS)/g, '<span class="highlight-title">$1</span>');
-            html = html.replace(/^([A-Za-záàâãéèêíïóôõöúçÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇ\s]+:)(\s*)/gm, '<span class="highlight-label">$1</span>$2');
-
+            let html = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            html = html.replace(/(https?:\/\/[^\s\)]+)/g, '<a href="$1" target="_blank" style="color:#4da6ff">$1</a>');
             return html;
         }
 
-        // Funcao para checar status da task
         async function checkTaskStatus(taskId) {
             const response = await fetch('/api/status?id=' + taskId);
             return await response.json();
         }
 
-        // ========== DISPLAY RESULTS ==========
         function displayResults(rawResult) {
             rawText = rawResult;
             const resultsContainer = document.getElementById('resultsContainer');
             const fallbackBox = document.getElementById('fallbackResultBox');
-            const copyBtn = document.getElementById('copyBtn');
-
-            // Try to parse JSON
             parsedData = extractJSON(rawResult);
-
             if (parsedData && typeof parsedData === 'object') {
-                // Structured display
                 resultsContainer.innerHTML = renderResults(parsedData);
                 plainTextForCopy = generatePlainText(parsedData);
-                crmResumoText = String(findValue(parsedData, ['resumo_para_crm', 'resumo_crm', 'resumo']) || '');
+                crmResumoText = String(findValue(parsedData, ['resumo_para_crm','resumo_crm','resumo']) || '');
                 sellerReportText = String(findValue(parsedData, ['relatorio_vendedor']) || '');
                 resultsContainer.style.display = 'block';
                 fallbackBox.style.display = 'none';
             } else {
-                // Fallback: raw text
                 fallbackBox.innerHTML = formatReport(rawResult);
                 plainTextForCopy = rawResult;
                 resultsContainer.style.display = 'none';
                 fallbackBox.style.display = 'block';
             }
-
-            copyBtn.innerHTML = '&#x1F4CB; Copiar para PipeRun';
-            copyBtn.classList.remove('copied');
         }
 
-        // Submit
         document.getElementById('form').addEventListener('submit', async (e) => {
             e.preventDefault();
-
             const cnpj = document.getElementById('cnpj').value.trim();
             const nome = document.getElementById('nome').value.trim();
-
-            if (cnpj.replace(/\D/g, '').length !== 14) {
-                alert('CNPJ deve ter 14 dígitos');
-                return;
-            }
+            if (cnpj.replace(/\D/g, '').length !== 14) { alert('CNPJ deve ter 14 dígitos'); return; }
 
             const btn = document.getElementById('submitBtn');
             const loading = document.getElementById('loading');
@@ -1340,75 +667,48 @@
             statusText.textContent = 'Iniciando análise...';
 
             try {
-                // Criar task
                 const createResponse = await fetch('/api/enriquecer', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ cnpj, nome })
                 });
-
                 const createData = await createResponse.json();
-
-                if (!createResponse.ok) {
-                    throw new Error(createData.error || 'Erro ao iniciar análise');
-                }
-
+                if (!createResponse.ok) throw new Error(createData.error || 'Erro ao iniciar análise');
                 const taskId = createData.taskId;
 
-                // Polling para checar status
                 let attempts = 0;
-                const maxAttempts = 180; // 15 minutos
-
+                const maxAttempts = 180;
                 const messages = [
-                    'Consultando bases oficiais...',
-                    'Buscando dados cadastrais...',
-                    'Analisando Receita Federal...',
-                    'Verificando situação cadastral...',
-                    'Coletando dados econômicos...',
-                    'Pesquisando redes sociais...',
-                    'Analisando presença digital...',
-                    'Buscando informações de contato...',
-                    'Identificando quadro societário...',
-                    'Analisando segmento de atuação...',
-                    'Calculando estimativas...',
-                    'Gerando análise SWOT...',
-                    'Compilando relatório...',
-                    'Finalizando análise...'
+                    'Consultando bases oficiais...', 'Buscando dados cadastrais...',
+                    'Analisando Receita Federal...', 'Verificando situação cadastral...',
+                    'Coletando dados econômicos...', 'Pesquisando redes sociais...',
+                    'Analisando presença digital...', 'Buscando informações de contato...',
+                    'Verificando Google Maps...', 'Analisando fit com ICP...',
+                    'Calculando estimativas...', 'Gerando insights de abordagem...',
+                    'Compilando ficha comercial...', 'Finalizando análise...'
                 ];
 
                 while (attempts < maxAttempts) {
                     await new Promise(r => setTimeout(r, 5000));
                     attempts++;
-
                     const msgIndex = Math.min(Math.floor(attempts / 4), messages.length - 1);
                     statusText.textContent = messages[msgIndex] + ' (' + (attempts * 5) + 's)';
-
                     try {
                         const statusData = await checkTaskStatus(taskId);
-
                         if (statusData.status === 'completed') {
                             displayResults(statusData.resultado);
                             resultSection.classList.add('active');
                             loading.style.display = 'none';
                             btn.disabled = false;
-
                             resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                             return;
                         }
-
-                        if (statusData.status === 'failed') {
-                            throw new Error(statusData.error || 'Falha na análise');
-                        }
+                        if (statusData.status === 'failed') throw new Error(statusData.error || 'Falha na análise');
                     } catch (pollError) {
-                        if (pollError.message && (pollError.message.includes('Falha') || pollError.message.includes('failed'))) {
-                            throw pollError;
-                        }
-                        console.log('Tentando novamente...', pollError);
+                        if (pollError.message && (pollError.message.includes('Falha') || pollError.message.includes('failed'))) throw pollError;
                     }
                 }
-
                 throw new Error('Timeout: a análise demorou demais');
-
             } catch (err) {
                 error.textContent = err.message;
                 error.style.display = 'flex';
@@ -1418,44 +718,18 @@
             }
         });
 
-        // Copiar relatório do vendedor
-        function copiarRelatorioVendedor() {
-            navigator.clipboard.writeText(sellerReportText).then(function() {
-                var btn = document.getElementById('btnSellerCopy');
-                btn.innerHTML = '&#x2705; Copiado!';
-                btn.classList.add('copied');
-                setTimeout(function() {
-                    btn.innerHTML = '&#x1F4CB; Copiar Relatório do Vendedor';
-                    btn.classList.remove('copied');
-                }, 2000);
+        function copyBtn(btnId, text, label) {
+            navigator.clipboard.writeText(text).then(function() {
+                var b = document.getElementById(btnId);
+                var orig = b.innerHTML;
+                b.innerHTML = '&#x2705; Copiado!';
+                b.classList.add('copied');
+                setTimeout(function() { b.innerHTML = orig; b.classList.remove('copied'); }, 2000);
             });
         }
-
-        // Copiar resumo CRM
-        function copiarResumoCrm() {
-            navigator.clipboard.writeText(crmResumoText).then(function() {
-                var btn = document.getElementById('btnCrmCopy');
-                btn.innerHTML = '&#x2705; Copiado!';
-                btn.classList.add('copied');
-                setTimeout(function() {
-                    btn.innerHTML = '&#x1F4CB; Copiar Resumo para o CRM';
-                    btn.classList.remove('copied');
-                }, 2000);
-            });
-        }
-
-        // Copiar resultado
-        function copiarResultado() {
-            navigator.clipboard.writeText(plainTextForCopy).then(function() {
-                var btn = document.getElementById('copyBtn');
-                btn.innerHTML = '&#x2705; Copiado!';
-                btn.classList.add('copied');
-                setTimeout(function() {
-                    btn.innerHTML = '&#x1F4CB; Copiar para PipeRun';
-                    btn.classList.remove('copied');
-                }, 2000);
-            });
-        }
+        function copiarResumoCrm() { copyBtn('btnCrmCopy', crmResumoText, ''); }
+        function copiarRelatorioVendedor() { copyBtn('btnSellerCopy', sellerReportText, ''); }
+        function copiarResultado() { copyBtn('copyBtn', plainTextForCopy, ''); }
     </script>
 </body>
 </html>

@@ -32,37 +32,30 @@ module.exports = async function handler(req, res) {
       const outputs = taskData.output || [];
       let resultado = '';
       let fileUrl = null;
-      let longText = '';
-      let shortText = '';
+      let allTexts = [];
 
-      // Percorre as mensagens de trás para frente
-      for (let i = outputs.length - 1; i >= 0; i--) {
+      // Percorre TODAS as mensagens e coleta tudo
+      for (let i = 0; i < outputs.length; i++) {
         const msg = outputs[i];
 
         if (msg.role === 'assistant' && msg.content && msg.content.length > 0) {
-          // Coleta fileUrl se existir
           for (const c of msg.content) {
             if (c.type === 'output_file' && c.fileUrl && !fileUrl) {
               fileUrl = c.fileUrl;
             }
             if (c.type === 'output_text' && c.text) {
-              if (c.text.length > 500 && !longText) {
-                longText = c.text;
-              } else if (!shortText) {
-                shortText = c.text;
-              }
+              allTexts.push(c.text);
             }
           }
         }
       }
 
-      // PRIORIDADE 1: Sempre tenta baixar o arquivo primeiro (contém o JSON completo)
+      // PRIORIDADE 1: Arquivo (contém o JSON completo)
       if (fileUrl) {
         try {
           const fileRes = await fetch(fileUrl);
           if (fileRes.ok) {
             const fileText = await fileRes.text();
-            // Só usa se tiver conteúdo substancial
             if (fileText && fileText.length > 50) {
               resultado = fileText;
             }
@@ -72,14 +65,30 @@ module.exports = async function handler(req, res) {
         }
       }
 
-      // PRIORIDADE 2: Texto longo (>500 chars) — provavelmente o relatório inline
-      if (!resultado && longText) {
-        resultado = longText;
+      // PRIORIDADE 2: Texto que contém JSON (procura { e } em todos os textos)
+      if (!resultado) {
+        // Primeiro tenta encontrar um texto individual que contenha JSON
+        for (const txt of allTexts) {
+          const firstBrace = txt.indexOf('{');
+          const lastBrace = txt.lastIndexOf('}');
+          if (firstBrace !== -1 && lastBrace > firstBrace && (lastBrace - firstBrace) > 100) {
+            resultado = txt;
+            break;
+          }
+        }
       }
 
-      // PRIORIDADE 3: Texto curto como último recurso
-      if (!resultado && shortText) {
-        resultado = shortText;
+      // PRIORIDADE 3: Combina todos os textos e tenta extrair JSON
+      if (!resultado && allTexts.length > 0) {
+        const combined = allTexts.join('\n');
+        const firstBrace = combined.indexOf('{');
+        const lastBrace = combined.lastIndexOf('}');
+        if (firstBrace !== -1 && lastBrace > firstBrace && (lastBrace - firstBrace) > 100) {
+          resultado = combined.substring(firstBrace, lastBrace + 1);
+        } else {
+          // Último recurso: pega o texto mais longo
+          resultado = allTexts.reduce((a, b) => a.length >= b.length ? a : b, '');
+        }
       }
 
       return res.status(200).json({ status: 'completed', resultado });

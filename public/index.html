@@ -548,6 +548,85 @@
             color: white;
         }
 
+        /* ICP Fit Card */
+        .icp-fit-card {
+            background: linear-gradient(135deg, #1a2744 0%, #0d1b2a 100%);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        .icp-fit-card.fit-alto {
+            border: 2px solid #28a745;
+        }
+        .icp-fit-card.fit-alto .result-card-header {
+            background: linear-gradient(135deg, #0a2e14 0%, #0d1b2a 100%);
+            border-bottom: 1px solid #28a745;
+        }
+        .icp-fit-card.fit-medio {
+            border: 2px solid #ffc107;
+        }
+        .icp-fit-card.fit-medio .result-card-header {
+            background: linear-gradient(135deg, #2a2200 0%, #0d1b2a 100%);
+            border-bottom: 1px solid #ffc107;
+        }
+        .icp-fit-card.fit-baixo {
+            border: 2px solid #dc3545;
+        }
+        .icp-fit-card.fit-baixo .result-card-header {
+            background: linear-gradient(135deg, #2a0a0e 0%, #0d1b2a 100%);
+            border-bottom: 1px solid #dc3545;
+        }
+
+        /* Seller Report Card */
+        .seller-report-card {
+            background: linear-gradient(135deg, #1a2744 0%, #0d1b2a 100%);
+            border: 2px solid #00d4ff;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        .seller-report-card .result-card-header {
+            background: linear-gradient(135deg, #001a2e 0%, #0d1b2a 100%);
+            border-bottom: 1px solid #00d4ff;
+        }
+        .seller-report-text {
+            padding: 20px;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .seller-copy-area {
+            padding: 0 20px 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .btn-seller-copy {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+            color: #1a1a2e;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-seller-copy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+        }
+        .btn-seller-copy.copied {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            color: white;
+        }
+
         /* Responsive */
         @media (max-width: 640px) {
             .field-grid {
@@ -611,6 +690,7 @@
         let rawText = '';
         let plainTextForCopy = '';
         let crmResumoText = '';
+        let sellerReportText = '';
         let parsedData = null;
 
         // Mascara CNPJ
@@ -898,6 +978,58 @@
 
             html += '</div></div></div>';
 
+            // --- 5b. Google Maps ---
+            const gMaps = findValue(data, ['google_maps']);
+            if (typeof gMaps === 'object' && gMaps) {
+                html += '<div class="result-card">';
+                html += '<div class="result-card-header"><span class="card-icon">&#x1F4CD;</span><span class="card-title">Google Maps</span></div>';
+                html += '<div class="result-card-body"><div class="field-grid">';
+                const mapsLink = gMaps.link || gMaps.url || '';
+                html += fieldItem('Link no Maps', mapsLink ? linkify(mapsLink, 'Abrir no Google Maps') : val(undefined), true);
+                html += fieldItem('Produtos Expostos', val(gMaps.tem_produtos_expostos));
+                html += fieldItem('Observação do Local', val(gMaps.observacao_local || gMaps.observacao), true);
+                html += '</div></div></div>';
+            }
+
+            // --- 5c. Análise ICP Mave ---
+            const icpData = findValue(data, ['analise_icp_mave', 'analise_icp']);
+            if (typeof icpData === 'object' && icpData) {
+                const perfil = String(icpData.perfil || '').toUpperCase();
+                const nivelFit = String(icpData.nivel_fit || icpData.fit || '').toLowerCase();
+                const fitClass = nivelFit.includes('alto') ? 'fit-alto' : (nivelFit.includes('edio') || nivelFit.includes('médio') ? 'fit-medio' : 'fit-baixo');
+
+                let perfilLabel = perfil;
+                if (perfil.includes('A')) perfilLabel = 'A - Revenda';
+                else if (perfil.includes('B')) perfilLabel = 'B - Transportadora';
+                else if (perfil.includes('C')) perfilLabel = 'C - Fora do ICP';
+
+                html += '<div class="icp-fit-card ' + fitClass + '">';
+                html += '<div class="result-card-header"><span class="card-icon">&#x1F3AF;</span><span class="card-title">Análise ICP Mave</span></div>';
+                html += '<div class="result-card-body"><div class="field-grid">';
+                html += fieldItem('Perfil', val(perfilLabel));
+
+                let fitBadge = '';
+                if (nivelFit.includes('alto')) fitBadge = '<span class="badge badge-green">' + esc(icpData.nivel_fit || icpData.fit) + '</span>';
+                else if (nivelFit.includes('edio') || nivelFit.includes('médio')) fitBadge = '<span class="badge badge-yellow">' + esc(icpData.nivel_fit || icpData.fit) + '</span>';
+                else fitBadge = '<span class="badge badge-red">' + esc(icpData.nivel_fit || icpData.fit || 'Baixo') + '</span>';
+                html += fieldItem('Nível de Fit', fitBadge);
+
+                html += fieldItem('Justificativa', val(icpData.justificativa), true);
+                html += '</div></div></div>';
+            }
+
+            // --- 5d. Relatório para o Vendedor ---
+            const relVendedor = findValue(data, ['relatorio_vendedor']);
+            if (relVendedor && String(relVendedor) !== 'N/A' && String(relVendedor) !== 'Não encontrado') {
+                html += '<div class="seller-report-card">';
+                html += '<div class="result-card-header"><span class="card-icon">&#x1F4BC;</span><span class="card-title">Relatório para o Vendedor</span></div>';
+                html += '<div class="seller-report-text">' + esc(String(relVendedor)) + '</div>';
+                html += '<div class="seller-copy-area">';
+                html += '<button class="btn-seller-copy" id="btnSellerCopy" onclick="copiarRelatorioVendedor()">&#x1F4CB; Copiar Relatório do Vendedor</button>';
+                html += '</div>';
+                html += '</div>';
+            }
+
             // --- 6. Metodologia (collapsible) ---
             const calcFunc = findValue(data, ['calculo_detalhado_funcionarios']);
             const metFat = findValue(data, ['metodologia_faturamento']);
@@ -1080,6 +1212,34 @@
                 lines.push('GPTW: N/A');
             }
 
+            // Google Maps
+            const gMaps = findValue(data, ['google_maps']);
+            if (typeof gMaps === 'object' && gMaps) {
+                lines.push('');
+                lines.push('=== GOOGLE MAPS ===');
+                lines.push('Link: ' + (gMaps.link || gMaps.url || 'N/A'));
+                lines.push('Produtos Expostos: ' + (gMaps.tem_produtos_expostos || 'N/A'));
+                lines.push('Observação: ' + (gMaps.observacao_local || gMaps.observacao || 'N/A'));
+            }
+
+            // Análise ICP
+            const icpData = findValue(data, ['analise_icp_mave', 'analise_icp']);
+            if (typeof icpData === 'object' && icpData) {
+                lines.push('');
+                lines.push('=== ANÁLISE ICP MAVE ===');
+                lines.push('Perfil: ' + (icpData.perfil || 'N/A'));
+                lines.push('Nível de Fit: ' + (icpData.nivel_fit || icpData.fit || 'N/A'));
+                lines.push('Justificativa: ' + (icpData.justificativa || 'N/A'));
+            }
+
+            // Relatório do Vendedor
+            const relVendedor = findValue(data, ['relatorio_vendedor']);
+            if (relVendedor && String(relVendedor) !== 'N/A' && String(relVendedor) !== 'Não encontrado') {
+                lines.push('');
+                lines.push('=== RELATÓRIO PARA O VENDEDOR ===');
+                lines.push(String(relVendedor));
+            }
+
             lines.push('');
             lines.push('=== META ===');
             lines.push('Nível de Confiança: ' + (findValue(data, ['nivel_confianca_geral', 'nivel_confianca', 'confianca']) || 'N/A'));
@@ -1140,6 +1300,7 @@
                 resultsContainer.innerHTML = renderResults(parsedData);
                 plainTextForCopy = generatePlainText(parsedData);
                 crmResumoText = String(findValue(parsedData, ['resumo_para_crm', 'resumo_crm', 'resumo']) || '');
+                sellerReportText = String(findValue(parsedData, ['relatorio_vendedor']) || '');
                 resultsContainer.style.display = 'block';
                 fallbackBox.style.display = 'none';
             } else {
@@ -1256,6 +1417,19 @@
                 loading.style.display = 'none';
             }
         });
+
+        // Copiar relatório do vendedor
+        function copiarRelatorioVendedor() {
+            navigator.clipboard.writeText(sellerReportText).then(function() {
+                var btn = document.getElementById('btnSellerCopy');
+                btn.innerHTML = '&#x2705; Copiado!';
+                btn.classList.add('copied');
+                setTimeout(function() {
+                    btn.innerHTML = '&#x1F4CB; Copiar Relatório do Vendedor';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
 
         // Copiar resumo CRM
         function copiarResumoCrm() {

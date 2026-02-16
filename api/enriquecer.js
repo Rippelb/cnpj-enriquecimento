@@ -159,7 +159,29 @@ Com base nos funcionários estimados e no setor:
 - Média empresa: > R$ 4,8 milhões e ≤ R$ 300 milhões/ano
 - Grande empresa: > R$ 300 milhões/ano
 
-### 6. RESUMO PARA CRM (TEXTO CORRIDO)
+### 6. GOOGLE MAPS E PONTO DE VENDA
+- Pesquise o estabelecimento no Google Maps usando nome e endereço
+- Retorne o link direto do Google Maps para o local
+- Analise as fotos do Google Maps e/ou site: o estabelecimento tem PRODUTOS EXPOSTOS em prateleiras/gôndolas visíveis? (Sim/Não/Não identificado)
+- Se for loja física, descreva brevemente o que é possível ver (fachada, tamanho aparente, produtos expostos)
+
+### 7. ANÁLISE DE FIT COM ICP MAVE
+A MAVE (mavebr.com) vende: cintas de amarração, catracas para caminhão, cintas de elevação, extensores elásticos, ganchos, toldos de lona, redes de contenção e acessórios para transporte de cargas.
+
+Classifique esta empresa em um dos perfis abaixo:
+
+**PERFIL A — REVENDA (lojas que revendem produtos Mave):**
+Ferragens, materiais de construção, acessórios para caminhão, lojas agrícolas ou similares. Critérios: ter produtos expostos, equipe de vendas, e atender clientes que usem o material (transportadoras, indústrias, prestadores de serviço, construção civil).
+
+**PERFIL B — CONSUMIDOR FINAL (transportadoras):**
+Transportadoras com mais de 10 caminhões que usem cintas na amarração. Tipos de carroceria que indicam uso: grade baixa, grade alta, sider, florestal, graneleiro, cegonheiro.
+
+**PERFIL C — FORA DO ICP:**
+Não se enquadra nos perfis acima.
+
+Retorne: qual perfil (A, B ou C), nível de fit (Alto/Médio/Baixo), e uma justificativa curta.
+
+### 8. RESUMO PARA CRM (TEXTO CORRIDO)
 Gere um parágrafo corrido de 4 a 6 linhas, em linguagem profissional e direta, que o closer possa colar no CRM. O texto deve conter:
 - Nome fantasia (ou razão social se não houver fantasia)
 - Segmento e nicho de atuação
@@ -171,7 +193,18 @@ Gere um parágrafo corrido de 4 a 6 linhas, em linguagem profissional e direta, 
 
 NÃO use bullet points, listas ou quebras de linha. Escreva tudo como um TEXTO CORRIDO em um único parágrafo. Seja objetivo mas completo.
 
-### 7. SCORE DE ATIVIDADE DIGITAL (1-5)
+### 9. RELATÓRIO PARA O VENDEDOR
+Gere um texto corrido de 5 a 8 linhas, focado em AJUDAR O VENDEDOR DA MAVE na abordagem e negociação. O texto deve:
+- Dizer se a empresa se encaixa no ICP e por quê
+- Indicar que tipos de produtos Mave seriam mais úteis para essa empresa (cintas, catracas, toldos, redes, etc.)
+- Se for REVENDA: mencionar se tem produtos expostos, se tem equipe de venda, e que tipo de cliente final ela atende
+- Se for TRANSPORTADORA: mencionar tipo de carroceria, quantidade estimada de veículos e demanda potencial
+- Sugerir um gancho de abordagem (ex: "pode abordar mencionando a linha de cintas para grade alta")
+- Alertar sobre qualquer risco ou objeção provável
+
+NÃO use bullet points. Escreva como TEXTO CORRIDO, direto e prático. O vendedor precisa ler rápido e ir para a ligação.
+
+### 10. SCORE DE ATIVIDADE DIGITAL (1-5)
 - 5/5: Posts diários, site moderno, 3+ redes ativas, 10k+ seguidores
 - 4/5: Posts semanais, site funcional, 2-3 redes, 5k-10k seguidores
 - 3/5: Posts mensais, site básico, 1-2 redes, 1k-5k seguidores
@@ -256,7 +289,18 @@ ${dadosReais ? 'Os campos de dados cadastrais JÁ ESTÃO preenchidos com dados r
     "mediana_calculada": "CALCULAR",
     "range_final": "CALCULAR"
   },
+  "google_maps": {
+    "link": "PESQUISAR — URL do Google Maps do estabelecimento",
+    "tem_produtos_expostos": "PESQUISAR (Sim / Não / Não identificado)",
+    "observacao_local": "PESQUISAR — breve descrição do que é visível (fachada, tamanho, produtos)"
+  },
+  "analise_icp_mave": {
+    "perfil": "CLASSIFICAR (A - Revenda / B - Transportadora / C - Fora do ICP)",
+    "nivel_fit": "CLASSIFICAR (Alto / Médio / Baixo)",
+    "justificativa": "EXPLICAR por que se encaixa ou não no ICP"
+  },
   "resumo_para_crm": "GERAR texto corrido de 4-6 linhas com as informações mais relevantes para o closer colar no CRM",
+  "relatorio_vendedor": "GERAR texto corrido de 5-8 linhas com inteligência comercial para o vendedor Mave abordar esta empresa",
   "metodologia_faturamento": "DESCREVER cálculo usado",
   "nivel_confianca_geral": "Alta / Média / Baixa",
   "fontes_consultadas": [],
@@ -285,7 +329,7 @@ ${dadosReais ? 'Os campos de dados cadastrais JÁ ESTÃO preenchidos com dados r
       body: JSON.stringify({
         prompt: PROMPT,
         temperature: 0.1,
-        max_tokens: 4000
+        max_tokens: 5000
       })
     });
 

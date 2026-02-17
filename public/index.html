@@ -300,14 +300,36 @@
 
         function extractJSON(raw) {
             if (!raw || typeof raw !== 'string') return null;
+
+            // 1) code fence ```json ... ```
             const fenceMatch = raw.match(/```json\s*([\s\S]*?)```/);
-            if (fenceMatch) { try { return JSON.parse(fenceMatch[1].trim()); } catch (e) {} }
+            if (fenceMatch) {
+                try { return JSON.parse(fenceMatch[1].trim()); } catch (e) {}
+            }
+
+            // 2) parse direto
             try { return JSON.parse(raw.trim()); } catch (e) {}
+
+            // 3) extrair de { até }
             const firstBrace = raw.indexOf('{');
             const lastBrace = raw.lastIndexOf('}');
             if (firstBrace !== -1 && lastBrace > firstBrace) {
-                try { return JSON.parse(raw.substring(firstBrace, lastBrace + 1)); } catch (e) {}
+                const candidate = raw.substring(firstBrace, lastBrace + 1);
+                try { return JSON.parse(candidate); } catch (e) {}
+
+                // 4) limpar trailing commas
+                const cleaned = candidate
+                    .replace(/,\s*}/g, '}')
+                    .replace(/,\s*]/g, ']');
+                try { return JSON.parse(cleaned); } catch (e) {}
+
+                // 5) tentar remover caracteres problemáticos (newlines dentro de strings)
+                const fixed = cleaned.replace(/:\s*"([^"]*)"/g, function(match, content) {
+                    return ': "' + content.replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\t/g, '\\t') + '"';
+                });
+                try { return JSON.parse(fixed); } catch (e) {}
             }
+
             return null;
         }
 
@@ -628,12 +650,67 @@
             return await response.json();
         }
 
+        // Fallback: tenta montar tabela a partir de texto bruto com pares "chave: valor"
+        function renderFallbackTable(text) {
+            let html = '<div class="doc">';
+            html += '<div class="doc-header"><h2>Ficha Comercial</h2><h1>Resultado da Análise</h1></div>';
+
+            // Tenta encontrar seções e linhas com "chave: valor"
+            const lines = text.split('\n');
+            let currentSection = 'Dados Encontrados';
+            let rows = [];
+
+            for (const line of lines) {
+                const trimmed = line.trim();
+                if (!trimmed) continue;
+
+                // Detecta headers (###, **, MAIÚSCULAS:)
+                if (trimmed.startsWith('###') || trimmed.startsWith('##') || trimmed.startsWith('#')) {
+                    if (rows.length > 0) {
+                        html += '<div class="doc-section"><div class="doc-section-title">' + esc(currentSection) + '</div>';
+                        html += '<table class="doc-table">' + rows.join('') + '</table></div>';
+                        rows = [];
+                    }
+                    currentSection = trimmed.replace(/^#+\s*/, '').replace(/\*+/g, '').trim();
+                    continue;
+                }
+
+                // Detecta "chave: valor" ou "- **chave:** valor"
+                const kvMatch = trimmed.match(/^[-•*]*\s*\**([^:*]+)\**\s*:\s*(.+)$/);
+                if (kvMatch) {
+                    const key = kvMatch[1].trim();
+                    const val = kvMatch[2].trim().replace(/\*+/g, '');
+                    rows.push(tableRow(key, esc(val)));
+                } else if (trimmed.length > 10) {
+                    // Texto corrido → mostra como parágrafo
+                    if (rows.length > 0) {
+                        html += '<div class="doc-section"><div class="doc-section-title">' + esc(currentSection) + '</div>';
+                        html += '<table class="doc-table">' + rows.join('') + '</table></div>';
+                        rows = [];
+                        currentSection = '';
+                    }
+                    html += '<div class="doc-section"><p class="doc-text">' + esc(trimmed) + '</p></div>';
+                }
+            }
+
+            if (rows.length > 0) {
+                html += '<div class="doc-section"><div class="doc-section-title">' + esc(currentSection) + '</div>';
+                html += '<table class="doc-table">' + rows.join('') + '</table></div>';
+            }
+
+            html += '<div class="doc-footer">Dados extraídos em formato texto — JSON não disponível</div>';
+            html += '</div>';
+            return html;
+        }
+
         function displayResults(rawResult) {
             rawText = rawResult;
             const resultsContainer = document.getElementById('resultsContainer');
             const fallbackBox = document.getElementById('fallbackResultBox');
             parsedData = extractJSON(rawResult);
+
             if (parsedData && typeof parsedData === 'object') {
+                // JSON extraído com sucesso → renderiza Ficha Comercial completa
                 resultsContainer.innerHTML = renderResults(parsedData);
                 plainTextForCopy = generatePlainText(parsedData);
                 crmResumoText = String(findValue(parsedData, ['resumo_para_crm','resumo_crm','resumo']) || '');
@@ -641,10 +718,20 @@
                 resultsContainer.style.display = 'block';
                 fallbackBox.style.display = 'none';
             } else {
-                fallbackBox.innerHTML = formatReport(rawResult);
+                // Fallback: tenta renderizar em tabela mesmo sem JSON
+                const hasKV = rawResult.includes(':') && rawResult.split('\n').length > 3;
+                if (hasKV) {
+                    resultsContainer.innerHTML = renderFallbackTable(rawResult);
+                    resultsContainer.style.display = 'block';
+                    fallbackBox.style.display = 'none';
+                } else {
+                    fallbackBox.innerHTML = formatReport(rawResult);
+                    resultsContainer.style.display = 'none';
+                    fallbackBox.style.display = 'block';
+                }
                 plainTextForCopy = rawResult;
-                resultsContainer.style.display = 'none';
-                fallbackBox.style.display = 'block';
+                crmResumoText = rawResult;
+                sellerReportText = '';
             }
         }
 

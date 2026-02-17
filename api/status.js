@@ -10,6 +10,36 @@ module.exports = async function handler(req, res) {
   const MANUS_API_KEY = process.env.MANUS_API_KEY || 'sk-XX1MREgcCgnZzOduoy96fNHckUBbquN6xWjObtI_ms5GSmPNhz1IxHsY0ZCpbEPqEqhmf1xsYBfNsy7Xz4iV1_VvA_qB';
   const MANUS_API_URL = 'https://api.manus.ai/v1';
 
+  // Extrai JSON válido de qualquer texto
+  function cleanJSON(text) {
+    if (!text || typeof text !== 'string') return null;
+
+    // 1) code fence ```json ... ```
+    const fenceMatch = text.match(/```json\s*([\s\S]*?)```/);
+    if (fenceMatch) {
+      try { JSON.parse(fenceMatch[1].trim()); return fenceMatch[1].trim(); } catch (e) {}
+    }
+
+    // 2) parse direto
+    try { JSON.parse(text.trim()); return text.trim(); } catch (e) {}
+
+    // 3) extrair de { até }
+    const firstBrace = text.indexOf('{');
+    const lastBrace = text.lastIndexOf('}');
+    if (firstBrace !== -1 && lastBrace > firstBrace) {
+      const candidate = text.substring(firstBrace, lastBrace + 1);
+      try { JSON.parse(candidate); return candidate; } catch (e) {}
+
+      // 4) limpa trailing commas e tenta de novo
+      const cleaned = candidate
+        .replace(/,\s*}/g, '}')
+        .replace(/,\s*]/g, ']');
+      try { JSON.parse(cleaned); return cleaned; } catch (e) {}
+    }
+
+    return null;
+  }
+
   try {
     const taskId = req.query.id;
 
@@ -56,7 +86,10 @@ module.exports = async function handler(req, res) {
           const fileRes = await fetch(fileUrl);
           if (fileRes.ok) {
             const fileText = await fileRes.text();
-            if (fileText && fileText.length > 50) {
+            const jsonFromFile = cleanJSON(fileText);
+            if (jsonFromFile) {
+              resultado = jsonFromFile;
+            } else if (fileText && fileText.length > 50) {
               resultado = fileText;
             }
           }
@@ -65,14 +98,12 @@ module.exports = async function handler(req, res) {
         }
       }
 
-      // PRIORIDADE 2: Texto que contém JSON (procura { e } em todos os textos)
+      // PRIORIDADE 2: Tenta extrair JSON válido de cada texto individual
       if (!resultado) {
-        // Primeiro tenta encontrar um texto individual que contenha JSON
         for (const txt of allTexts) {
-          const firstBrace = txt.indexOf('{');
-          const lastBrace = txt.lastIndexOf('}');
-          if (firstBrace !== -1 && lastBrace > firstBrace && (lastBrace - firstBrace) > 100) {
-            resultado = txt;
+          const jsonFromTxt = cleanJSON(txt);
+          if (jsonFromTxt && jsonFromTxt.length > 100) {
+            resultado = jsonFromTxt;
             break;
           }
         }
@@ -81,10 +112,9 @@ module.exports = async function handler(req, res) {
       // PRIORIDADE 3: Combina todos os textos e tenta extrair JSON
       if (!resultado && allTexts.length > 0) {
         const combined = allTexts.join('\n');
-        const firstBrace = combined.indexOf('{');
-        const lastBrace = combined.lastIndexOf('}');
-        if (firstBrace !== -1 && lastBrace > firstBrace && (lastBrace - firstBrace) > 100) {
-          resultado = combined.substring(firstBrace, lastBrace + 1);
+        const jsonFromCombined = cleanJSON(combined);
+        if (jsonFromCombined && jsonFromCombined.length > 100) {
+          resultado = jsonFromCombined;
         } else {
           // Último recurso: pega o texto mais longo
           resultado = allTexts.reduce((a, b) => a.length >= b.length ? a : b, '');

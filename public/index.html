@@ -402,6 +402,10 @@
             html += tableRow('Funcionários', esc(v(findValue(data, ['estimativa_final_funcionarios','funcionarios']))) + ' colaboradores');
             html += tableRow('Faturamento', esc(v(findValue(data, ['estimativa_final_faturamento','faturamento_estimado']))), true);
             html += tableRow('Segmento', esc(v(findValue(data, ['nicho_de_mercado','nicho','nicho_mercado']))));
+            const simplesNac = v(findValue(data, ['optante_simples_nacional','simples_nacional','opcao_pelo_simples']));
+            const mei = v(findValue(data, ['optante_mei','mei','opcao_pelo_mei']));
+            html += tableRow('Simples Nacional', esc(simplesNac), simplesNac === 'Sim');
+            if (mei !== 'N/A') html += tableRow('MEI', esc(mei));
             html += '</table></div>';
 
             // === 2. CONTATO DIRETO ===
@@ -582,6 +586,7 @@
             lines.push('Funcionários: ' + v(findValue(data, ['estimativa_final_funcionarios'])));
             lines.push('Faturamento: ' + v(findValue(data, ['estimativa_final_faturamento'])));
             lines.push('Segmento: ' + v(findValue(data, ['nicho_de_mercado'])));
+            lines.push('Simples Nacional: ' + v(findValue(data, ['optante_simples_nacional','simples_nacional','opcao_pelo_simples'])));
 
             lines.push('');
             lines.push('=== CONTATO ===');

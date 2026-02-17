@@ -84,6 +84,8 @@ Estes dados são REAIS e CONFIRMADOS. Use-os EXATAMENTE como estão no JSON de r
 - **Capital Social:** ${capitalFormatado}
 - **Porte (Receita Federal):** ${dadosReais.descricao_porte || 'N/A'}
 - **Natureza Jurídica:** ${dadosReais.descricao_natureza_juridica || dadosReais.natureza_juridica || 'N/A'}
+- **Optante pelo Simples Nacional:** ${dadosReais.opcao_pelo_simples === true ? 'Sim' : dadosReais.opcao_pelo_simples === false ? 'Não' : 'Não informado'}
+- **Optante pelo MEI:** ${dadosReais.opcao_pelo_mei === true ? 'Sim' : dadosReais.opcao_pelo_mei === false ? 'Não' : 'Não informado'}
 - **CNAE Principal:** ${dadosReais.cnae_fiscal || ''} - ${dadosReais.cnae_fiscal_descricao || 'N/A'}
 ${cnaesSecTexto ? '- **CNAEs Secundários:**\n' + cnaesSecTexto : ''}
 - **Endereço:** ${endereco || 'N/A'}
@@ -235,6 +237,8 @@ ${dadosReais ? 'Os campos de dados cadastrais JÁ ESTÃO preenchidos com dados r
   "data_fundacao": "${dadosReais ? (dadosReais.data_inicio_atividade || '') : ''}",
   "capital_social": "${dadosReais && dadosReais.capital_social ? 'R$ ' + Number(dadosReais.capital_social).toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : ''}",
   "situacao_cadastral": "${dadosReais ? (dadosReais.descricao_situacao_cadastral || '') : ''}",
+  "optante_simples_nacional": "${dadosReais ? (dadosReais.opcao_pelo_simples === true ? 'Sim' : dadosReais.opcao_pelo_simples === false ? 'Não' : 'Não informado') : 'PESQUISAR'}",
+  "optante_mei": "${dadosReais ? (dadosReais.opcao_pelo_mei === true ? 'Sim' : dadosReais.opcao_pelo_mei === false ? 'Não' : 'Não informado') : 'PESQUISAR'}",
   "segmento_principal": "PESQUISAR",
   "nicho_de_mercado": "PESQUISAR",
   "cnae_principal": {
